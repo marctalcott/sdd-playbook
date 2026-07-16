@@ -177,6 +177,64 @@ at the boundary, which is cheap and local.
 
 ---
 
+### D-004 — A Reader may hold a Title they already have on Loan
+
+**Status:** **Superseded by D-005**
+**Date:** 2026-02-14
+**Deciders:** Feature Manager
+
+**Context:**
+A Reader finishing a book might want to borrow it again — for a book group, or because they didn't
+finish. Blocking that felt paternalistic, and we had no evidence anyone would abuse it.
+
+**Decision:**
+A Reader may place a Hold on a Title they currently have on Loan.
+
+**Consequences:**
+- No check needed at the point a Hold is placed.
+
+> **Superseded 2026-05-20 by D-005.** We were wrong, and the way we found out is worth recording. A
+> handful of Readers worked out they could hold a Title they already had out, and — because the
+> queue is strictly first-come-first-served (D-001) — re-enter at the back the moment they returned
+> it, but *before* anyone else could act. Over a popular Title this looked indistinguishable from
+> never giving it back. It wasn't abuse so much as a rule we'd left open. Left in place, it
+> undermined P-03 (equitable access), which is the one principle we'd said we'd say no over.
+>
+> **This entry stays.** Deleting it would erase the reasoning, and the next person would propose the
+> same thing again in good faith.
+
+---
+
+### D-005 — A Reader may not hold a Title they already have on Loan
+
+**Status:** Accepted
+**Date:** 2026-05-20
+**Deciders:** Feature Manager, Tech Lead
+**Supersedes:** D-004
+
+**Context:**
+See D-004. Allowing it let a Reader hold their place at the front of a queue indefinitely, which
+made a popular Title effectively un-gettable for everyone else.
+
+**Decision:**
+A Hold is refused when the Reader has an active Loan on that Title. They may place one once the
+Copy is returned.
+
+**Rationale:**
+Equitable access (P-03) beats the convenience of the minority who want an immediate re-borrow. Those
+Readers can still re-hold the moment they return the Copy — they just join the back of the queue
+like everyone else, which is the property the queue is for.
+
+**Consequences:**
+- **Every hold spec needs an acceptance criterion for the refusal** — see F-HLD-015 criterion 4.
+- Renewal (F-LON-018) is the humane answer for "I'm not finished", and is now the right place for
+  that need. The decision moved the requirement rather than denying it.
+- **Any spec still citing D-004 is stale.** `@feature.analyze` checks exactly this and will flag it.
+
+**Affects:** F-HLD-015; F-LON-018; glossary §4 (`HoldState`).
+
+---
+
 ## Decisions
 
 *(append here — newest last)*

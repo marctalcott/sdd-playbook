@@ -83,7 +83,7 @@ written the wrong document.
 You run one command:
 
 ```
-@feature.specify F-CAT-001
+@feature.specify F-HLD-015
 ```
 
 It reads your catalog row and, crucially, **assembles the context around it**: the full text of every

@@ -48,13 +48,23 @@ that I get the next one returned without having to keep checking back.
   moved to the Shelf for me and I am notified exactly once.
 - Given a Copy is on the Shelf for me, when `HoldShelfWindowHours` elapses without
   collection, then my Hold expires and the Copy passes to the next Reader.
+- Given a Title I already have on Loan, when I view it, then I cannot place a
+  Hold (D-005).
 
 **Out of scope:**
 - Holding a *specific* Copy — the queue is Title-level per D-001
 - Inter-library loans
+- Suspending a Hold while away → F-HLD-021
 
-**Dependencies:** F-CAT-001 (Catalogue), F-NOT-004 (Notifications)
+**Dependencies:** F-CAT-001 (Title catalogue), F-LON-002 (emits `CopyReturned`),
+F-NOT-004 (Notification centre)
 ```
+
+Three things in that row are doing quiet work. **`HoldShelfWindowHours` is named, not
+numbered** (D-002) — so the spec survives a policy change. **Criterion 4 cites D-005**,
+which is why the rule exists at all rather than looking like an arbitrary restriction.
+And the out-of-scope entry **points at a real row**, so the customer can see where their
+request went rather than being told no.
 
 **Then specify:**
 

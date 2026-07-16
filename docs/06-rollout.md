@@ -57,6 +57,13 @@ over.
 **Day 4–5: write three catalog rows.** Full ones — user story, three Given/When/Then criteria, linked
 principles and personas, out-of-scope, dependencies.
 
+Pick three that are *related*, not three at random. In the example product that's the Hold Queue,
+renewing a Loan, and the Librarian's shelf report — and the reason to pick related ones is that
+you'll immediately hit the interesting question: **renewal has to refuse when someone else is
+holding the Title, so which of these do you build first, and which vocabulary has to exist before
+the others can even be written down?** That argument is the one worth having in week one. Three
+unrelated rows won't provoke it.
+
 **The test for this week:** hand a catalog row to someone who wasn't in the room. Can they tell you
 exactly what would and wouldn't be built? If not, the row isn't done — and no tooling will save it.
 
