@@ -2,7 +2,7 @@
 name: feature.specify
 description: >-
   Stage 2 — Specify (Feature Manager). Promotes a Ready-for-spec row from
-  07-feature-catalog.md into ONE cross-repo feature spec + a manifest under
+  04-feature-catalog.md into ONE cross-repo feature spec + a manifest under
   <product>-docs/features/NNN-slug/, then creates the per-repo branches and writes each
   in-scope repo's FUNCTIONAL spec.md — the repo-local projection of the feature spec (the
   WHAT: user stories, acceptance criteria, functional requirements). Writes ONLY inside
@@ -59,7 +59,7 @@ The technical artifacts (`plan.md`, `research.md`, `data-model.md`, `contracts/`
   repo. This stage writes the functional WHAT only. Keep `spec.md` implementation-agnostic —
   no class names, file paths, table names, or library choices.
 - **Inventing domain terms, enums, personas, or decisions.** Every name comes from
-  `08-glossary.md`, `02-personas-and-jobs.md`, `09-decisions.md`. A needed-but-missing term is
+  `05-glossary.md`, `02-personas-and-jobs.md`, `06-decisions.md`. A needed-but-missing term is
   an **Open Question**, never a coined synonym. *Names are law.*
 - **Hard-coding business values** (thresholds, caps, fees, windows). These live in config; the
   spec references them by name. A literal in a spec becomes a literal in production.
@@ -80,7 +80,7 @@ which sibling is missing.
 
 ### 2. Resolve the feature from the catalog
 
-1. Open `<workspace>/<product>-docs/07-feature-catalog.md` and find the row. It **MUST** be at
+1. Open `<workspace>/<product>-docs/04-feature-catalog.md` and find the row. It **MUST** be at
    status **Ready-for-spec** with: a complete user story, **≥3 Given/When/Then acceptance
    criteria**, ≥1 linked principle, ≥1 linked persona, an out-of-scope list, and a dependencies
    list. If anything is missing, **STOP and report exactly what** — fixing the catalog is a docs
@@ -113,8 +113,8 @@ which sibling is missing.
    - the catalog row
    - the **full text** of each linked principle from `03-product-principles.md`
    - each referenced persona from `02-personas-and-jobs.md`
-   - the in-scope rows from `08-glossary.md`
-   - the constraining entries from `09-decisions.md`
+   - the in-scope rows from `05-glossary.md`
+   - the constraining entries from `06-decisions.md`
 
    Cite principle IDs (`P-XX`) and decision IDs (`D-XXX`) where they constrain a choice. Mark
    anything unresolved as an **Open Question**. Do not guess.
@@ -187,7 +187,7 @@ Use `blocked` only when the catalog row is missing/incomplete or the workspace c
 - **A feature that touches one repo is fine.** Set `--repos api`. Don't manufacture a UI slice
   the catalog row didn't ask for.
 - **Names are law.** A `Title` means the same thing in the docs, the API, and the UI. If the
-  spec needs a term that isn't in `08-glossary.md`, that's a signal to add it deliberately, with
+  spec needs a term that isn't in `05-glossary.md`, that's a signal to add it deliberately, with
   the team — flag it, don't invent it.
 - **Your output is going to a customer next.** Write it so a non-technical person can disagree
   with it. That is the whole point of the next stage.

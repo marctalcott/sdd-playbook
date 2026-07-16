@@ -43,7 +43,7 @@ lesson, which is that this is easy.
 
 This week has **no AI in it at all**, and it is the highest-value week of the rollout.
 
-**Day 1–2: write `08-glossary.md`.** Every domain term, one name each. This will take longer than you
+**Day 1–2: write `05-glossary.md`.** Every domain term, one name each. This will take longer than you
 think and it will surface disagreements you didn't know you had — that's not the process going badly,
 that's the process working. The fights you have this week are fights you'd otherwise have had in a
 code review in month three, with code already written on both sides of the misunderstanding.

@@ -41,7 +41,7 @@ file, and a field in a file can be wrong.
 **Write scope.** You may write ONLY:
 
 - `<workspace>/<product>-docs/features/NNN-slug/manifest.yaml`: `ship.*`, `status`, `log`.
-- `<workspace>/<product>-docs/07-feature-catalog.md`: the row's status → **Shipped**.
+- `<workspace>/<product>-docs/04-feature-catalog.md`: the row's status → **Shipped**.
 - Git: merge the recorded PRs to the **default branch**. Deploy per your project's pipeline.
 
 **Forbidden — STOP if you are about to:**
@@ -148,7 +148,7 @@ ship:
 ### 5. Close the loop — the part that's easy to skip
 
 Confirm **every** `uat.findings.requests[]` entry has a `catalog_row`, and that each of those rows
-actually exists in `07-feature-catalog.md`.
+actually exists in `04-feature-catalog.md`.
 
 This is the last checkpoint on the promise made at UAT. Somebody told a customer "that's going in
 the backlog." If the row isn't there, that was not a triage decision — it was a polite way of

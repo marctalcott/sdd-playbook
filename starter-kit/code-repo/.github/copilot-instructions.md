@@ -21,7 +21,7 @@
 
 ## Non-negotiable
 
-- **Domain vocabulary comes from `../<product>-docs/08-glossary.md`.** One name per concept.
+- **Domain vocabulary comes from `../<product>-docs/05-glossary.md`.** One name per concept.
   **Never invent a synonym.** If a term you need isn't there, that's an Open Question for the team,
   not a word you coin.
 - **Business values come from configuration, by name.** Never a literal. See `D-002` and glossary §6.

@@ -26,7 +26,7 @@
 - **Adding a term** is a deliberate act. Propose it, agree it, add it. It is not a side effect of
   writing a spec.
 - **Renaming a term** means every spec that used it is now stale. Add a decision in
-  [09-decisions.md](09-decisions.md) recording why, and list the affected specs in the PR.
+  [06-decisions.md](06-decisions.md) recording why, and list the affected specs in the PR.
 - **The `Avoid` column is load-bearing.** Naming the synonyms you rejected is how you stop them
   coming back. Every one of them is a word someone reasonable will reach for.
 

@@ -44,34 +44,67 @@ because every line you put there is a line that can drift from the repos below i
 ## Layer 1: the product docs repo
 
 One repo. No application code. It holds the vocabulary and the intent that every other repo consumes.
-A numbered set of documents works well because the numbers imply the reading order:
 
 ```
 <product>-docs/
-├── 01-vision.md                 product vision
-├── 02-personas-and-jobs.md      personas and jobs-to-be-done
-├── 03-product-principles.md     principles (P-01, P-02, …)
-├── 04-current-state.md
-├── 05-target-state.md
-├── 06-roadmap.md                sequencing
-├── 07-feature-catalog.md   ★    the backlog — every feature request
-├── 08-glossary.md          ★    THE canonical vocabulary
-├── 09-decisions.md         ★    product decisions (D-001, D-002, …)
-├── 10-handoff.md                how docs become specs (this process, project-specific)
-├── 11-walkthroughs.md           end-to-end narratives
+│                                ── narrative: read once, changes quarterly ──
+├── 01-vision.md                 why the product exists
+├── 02-personas-and-jobs.md      who it's for, and their jobs-to-be-done
+├── 03-product-principles.md     what you'd say no to a customer over (P-01, P-02, …)
+│                                ── live: changes daily ──
+├── 04-feature-catalog.md   ★    the backlog — every feature request
+│                                ── reference: consulted constantly, never read cover to cover ──
+├── 05-glossary.md          ★    THE canonical vocabulary
+├── 06-decisions.md         ★    the decisions, with the reasoning (D-001, D-002, …)
+│                                ── examples ──
+├── 07-walkthroughs.md           end-to-end narratives
 └── features/                    ← layer 2 lives here
     ├── _template/manifest.yaml
     └── NNN-slug/
 ```
 
+**The numbers group by volatility, not by importance.** Files 01–03 are narrative — a newcomer reads
+them once, and they change a few times a year. 04 is the only *live* document: it moves every day.
+05–06 are reference — nobody reads a glossary front to back, you look things up in it, constantly.
+
+Don't read that ordering as a work order. **When you set this up, you write 05 first** — see
+[06 — Rollout](06-rollout.md). The glossary is the highest-numbered file you'll write on day one,
+and that's not a contradiction: numbering serves the reader, not the author.
+
+### Which of these the AI actually reads
+
+Worth knowing precisely, because it tells you where accuracy is load-bearing:
+
+| Document | Read by |
+|---|---|
+| `05-glossary.md` | **Agents, constantly** — the single most-loaded file in the system |
+| `04-feature-catalog.md` | **Agents** — `@feature.specify` refuses to run on an incomplete row |
+| `06-decisions.md` | **Agents** — constraining decisions get pulled into every spec and cited |
+| `02-personas-and-jobs.md` | **Agents** — referenced personas are assembled into the spec verbatim |
+| `03-product-principles.md` | **Agents** — a linked principle's full text goes into the spec |
+| `01-vision.md` | Humans only |
+| `07-walkthroughs.md` | Humans only |
+
+The five the agents load are the ones where a sloppy sentence becomes a sloppy spec, then sloppy
+code. The two humans-only files matter for a different reason: they're how a new joiner gets their
+bearings before the reference material means anything. **Both readers are real** — just don't kid
+yourself that a beautifully written vision statement improves what the model generates. It doesn't.
+The glossary does.
+
+> **Seven documents, and no more than that.** If you're porting an existing docs set, resist
+> carrying over a `current-state.md`, a `target-state.md`, or a `roadmap.md` just because you have
+> one. Nothing in this pipeline reads them, and **a document nothing references is a document nobody
+> updates** — a stale doc in a repo whose entire claim is "source of truth" is worse than no doc at
+> all. Add one the day something actually needs it.
+
 The three starred files do the daily work.
 
-**`07-feature-catalog.md` — the backlog.** Every feature request, in a fixed shape. A row must be
+**`04-feature-catalog.md` — the backlog.** Every feature request, in a fixed shape. A row must be
 complete before it can be specified: user story, ≥3 Given/When/Then acceptance criteria, linked
 principles, linked personas, out-of-scope, dependencies, status. Statuses run
 `Idea → Ready-for-spec → Spec'd → In-progress → Shipped`.
 
-**`08-glossary.md` — the vocabulary.** The most important file in the system. Every domain term,
+**`05-glossary.md` — the vocabulary.** The most important file in the system. Every domain term,
 every enum, every identifier, every state transition. **One name per concept, and no synonyms.**
 
 Why this file matters more than it looks: an AI generating a spec will happily write `order` where
@@ -80,7 +113,7 @@ codebase has two words for one thing and every future conversation carries a tra
 compounds. This is the most common way spec-driven development quietly fails, and the glossary is the
 only defence.
 
-**`09-decisions.md` — the decisions. The reason this repo exists.**
+**`06-decisions.md` — the decisions. The reason this repo exists.**
 
 Numbered, dated, and carrying the *reasoning* rather than just the ruling: *a Hold is placed on a
 Title, never a Copy* (D-001), *policy values live in config* (D-002). Specs cite them by number.
@@ -142,7 +175,7 @@ that makes the pipeline mechanical.
 ```yaml
 feature: 015-hold-queue
 title: Hold Queue
-catalog_ref: F-HLD-015                # the row in 07-feature-catalog.md
+catalog_ref: F-HLD-015                # the row in 04-feature-catalog.md
 source: <product>-docs@a1b2c3d        # the exact docs version this was specified from
 
 status: draft                         # draft → spec-signed-off → in-progress
@@ -310,7 +343,7 @@ test that gates production in stage 7.
 ├── <product>.code-workspace          ← VS Code multi-root file. See doc 05.
 │
 ├── <product>-docs/
-│   ├── 01-vision.md … 11-walkthroughs.md
+│   ├── 01-vision.md … 07-walkthroughs.md
 │   ├── .github/agents/               ← the feature.* Copilot agents live here
 │   └── features/
 │       ├── _template/manifest.yaml

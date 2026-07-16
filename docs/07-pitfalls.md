@@ -22,7 +22,7 @@ because it learned from a world where both exist.
 to talk about your own system, every week, forever.
 
 **The rule:** *Names are law.* One glossary. One name per concept. If a spec needs a word that isn't
-in `08-glossary.md`, that is a **signal to add the term deliberately, with the team** — not a licence
+in `05-glossary.md`, that is a **signal to add the term deliberately, with the team** — not a licence
 to coin a synonym. Reject any generated artifact that invents one; put the glossary rows in the prompt
 and regenerate.
 

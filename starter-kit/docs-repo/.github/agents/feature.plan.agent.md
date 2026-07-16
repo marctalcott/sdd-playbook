@@ -105,7 +105,7 @@ A signoff naming "the team", or an AI, is not a signoff.
   overwrite them. Someone's already-reviewed work is not your scratch space.
 - **Inventing contracts, domain terms, enums, or decisions.** API contracts come from the API
   repo (its `contracts/`, or — when merged — its real endpoints). Domain names come from
-  `<product>-docs/08-glossary.md`; constraints from `09-decisions.md`. A needed-but-missing term
+  `<product>-docs/05-glossary.md`; constraints from `06-decisions.md`. A needed-but-missing term
   is an **Open Question** in `feature.md`, never a coined synonym. *Names are law.*
 - **Hard-coding business values** (thresholds, caps, fees, windows) into a plan. These live in
   config; the plan references them by config key. A literal in a plan becomes a literal in
@@ -159,7 +159,7 @@ In a single message, dispatch one `repo-planner` sub-agent per repo-needing-plan
 repo, in parallel). Each prompt MUST be self-contained and instruct the sub-agent to:
 
 - Read its `spec.md`, its constitution (`manifest.repos.<repo>.constitution`), and
-  `<product>-docs/08-glossary.md` + `09-decisions.md` for canonical names and constraints.
+  `<product>-docs/05-glossary.md` + `06-decisions.md` for canonical names and constraints.
 - Run the repo's native Spec Kit **plan** flow — produce `plan.md`, `research.md`,
   `data-model.md`, and `contracts/` inside `.specify/specs/NNN-slug-*/`, following the repo's
   `.specify/templates/plan-template.md` and its constitution. Resolve unknowns in `research.md`;
@@ -232,7 +232,7 @@ needed branch isn't checked out — each requires a human to act before re-runni
   invalidates the signature and nobody finds out until UAT. Surface gaps as Open Questions
   instead.
 - **Names are law.** A `Title` means the same thing in the docs, the API, and the UI. If the
-  plan needs a term that isn't in `08-glossary.md`, that's a signal to add it deliberately, with
+  plan needs a term that isn't in `05-glossary.md`, that's a signal to add it deliberately, with
   the team — flag it, don't invent it.
 - **Config keys, not literals.** Any number a business person might want to change later is a
   config reference in the plan. Inline it and it will be inlined in production too.

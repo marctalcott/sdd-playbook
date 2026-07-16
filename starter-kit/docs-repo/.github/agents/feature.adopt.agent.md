@@ -126,7 +126,7 @@ entire footprint of this stage.**
   and writing code belong to `@feature.plan` / `@feature.tasks` / `@feature.implement`.
 - **Inventing domain terms, personas, decisions, or acceptance criteria.** Everything in
   `feature.md` is **ASSEMBLED** from what already exists — the per-repo specs plus the docs repo
-  (`08-glossary.md`, `02-personas-and-jobs.md`, `09-decisions.md`). A missing term is an **Open
+  (`05-glossary.md`, `02-personas-and-jobs.md`, `06-decisions.md`). A missing term is an **Open
   Question**, never a coined synonym. *Names are law.*
 - **Silently including or dropping a story.** Every story is either in-scope or in the
   `excluded:` record **with a reason**. Ambiguous → Open Question **plus** a reported warning.
@@ -147,7 +147,7 @@ repos **as siblings** (`<product>-docs/`, `<product>-api/`, `<product>-ui/`). Th
 ### 2. Resolve the feature and its on-disk footprint
 
 1. From the input, determine the candidate `NNN`/slug. For a catalog ID, open
-   `<workspace>/<product>-docs/07-feature-catalog.md`, find the row, and note its short name and
+   `<workspace>/<product>-docs/04-feature-catalog.md`, find the row, and note its short name and
    any spec folders it references. Unlike Specify, the catalog row is **not** a hard gate here —
    the disk is the authority. Note it as a warning if the row is missing or stale.
 2. Locate the **live** spec footprint by scanning each repo's Spec Kit root for a matching
@@ -216,7 +216,7 @@ Spec Kit root is prefixed but the branch is not; those are different paths.
    numbering. Do not renumber.** Those IDs are already referenced by task lists, branches, test
    tags, and PR descriptions; renumbering silently invalidates all of them.
 2. Mark a story **excluded** when: a supersession marker from step 3 flags it; a decision in
-   `09-decisions.md` supersedes it; it is backend-only with no UI surface (when the remaining
+   `06-decisions.md` supersedes it; it is backend-only with no UI surface (when the remaining
    work is UI); or the user passed `--exclude`. Record each exclusion **with its reason and
    where the work moved**, if anywhere.
 3. Anything ambiguous → **Open Question** in `feature.md` **and** a warning in your report.
@@ -234,7 +234,7 @@ Spec Kit root is prefixed but the branch is not; those are different paths.
    - **Scope** — in, and explicitly out **with reasons**.
    - **Governing principles** (cite `P-XX`) and **decisions** (cite `D-XXX`), including any that
      drive an exclusion.
-   - **Canonical names** pulled from `08-glossary.md`. Nothing coined.
+   - **Canonical names** pulled from `05-glossary.md`. Nothing coined.
    - The **in-scope user stories** with their Given/When/Then acceptance criteria and the **live
      API contracts they consume**, by endpoint path. A merged API's spec owns the field shapes —
      point at it, don't restate it, or you have just created a second source of truth that will
@@ -313,7 +313,7 @@ can't be resolved — both need a human before a re-run.
   which repos are frozen and which still need work** — get it wrong and `feature.plan` will
   cheerfully re-plan shipped code.
 - **Names are law.** A `Title` means the same thing in the docs, the API, and the UI. If
-  `feature.md` needs a term that isn't in `08-glossary.md`, flag it — that's a signal to add it
+  `feature.md` needs a term that isn't in `05-glossary.md`, flag it — that's a signal to add it
   deliberately, with the team. Don't invent it.
 - **Never fabricate a signoff.** Not to unblock `feature.plan`, not "just as a placeholder", not
   with the team's name on it. An unsigned adopted feature is an honest state of the world; a

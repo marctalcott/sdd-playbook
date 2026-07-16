@@ -101,7 +101,7 @@ exactly how you know who to route a finding to.
   they came from a real run there.
 - **Invent a finding to seem thorough, or invent a domain term.** Every finding cites a concrete
   location (`file:line` / a manifest path) and a real inconsistency. A padded finding list trains
-  the reader to ignore the real ones. Names are checked against `08-glossary.md`, never coined.
+  the reader to ignore the real ones. Names are checked against `05-glossary.md`, never coined.
   *Names are law.*
 
 **Do not run other stages.** You end at a report. Someone else does the repair.
@@ -158,7 +158,7 @@ leaking into an in-scope slice is the signature failure of this layer; check it 
 **C. Cross-repo contract & terminology.** What the API exposes (merged endpoints / planned
 `contracts/`) vs what the UI consumes (its API-consumption layer / hooks): paths, field names,
 enum values, and status codes must agree. Glossary terms are used identically in `feature.md`,
-both repos' specs, and the code — flag any term used but **absent from `08-glossary.md`**.
+both repos' specs, and the code — flag any term used but **absent from `05-glossary.md`**.
 
 **D. Constitution & decision alignment.** Each repo's work and plan conform to **that repo's own**
 constitution (config-not-hardcoded, real-API, naming, accessibility). Cited principles (`P-XX`)

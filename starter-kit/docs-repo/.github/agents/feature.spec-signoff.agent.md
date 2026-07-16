@@ -51,7 +51,7 @@ You do **not** decide. You present and you record.
 
 - `<workspace>/<product>-docs/features/NNN-slug/manifest.yaml`: `spec_signoff.*`, `status`, `log`.
 - `<workspace>/<product>-docs/features/NNN-slug/feature.md`: Open Questions raised in the review.
-- `<workspace>/<product>-docs/07-feature-catalog.md`: the row's status, **only** on a real signoff.
+- `<workspace>/<product>-docs/04-feature-catalog.md`: the row's status, **only** on a real signoff.
 
 **Forbidden — STOP if you are about to:**
 

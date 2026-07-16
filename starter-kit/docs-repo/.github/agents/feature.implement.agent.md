@@ -84,7 +84,7 @@ switch branches, never write to the default branch.
 - **Implement against `TBD` slices.** If the story's slices are still `TBD`, STOP: "run
   `@feature.tasks NNN-slug` first." Guessing the work order silently un-does the Tech Lead's
   sequencing.
-- **Invent API contracts or domain names.** Consume the merged/planned contracts and `08-glossary.md`
+- **Invent API contracts or domain names.** Consume the merged/planned contracts and `05-glossary.md`
   names **verbatim**. A gap is an Open Question, not a coined name. *Names are law.*
 
 **Do not run later stages.** You stop at a green local build with unit/component tests passing. The
@@ -130,7 +130,7 @@ rebuild, not a slice.
 Each sub-agent prompt must be self-contained and instruct it to:
 
 - Read its `spec.md` / `plan.md` / `data-model.md` / `contracts/`, its constitution
-  (`manifest.repos.<repo>.constitution`), and `08-glossary.md` — and **build strictly within the
+  (`manifest.repos.<repo>.constitution`), and `05-glossary.md` — and **build strictly within the
   constitution**. Don't re-litigate the repo's TDD or style rules; the sub-agent obeys them.
 - When this repo consumes a `merged` repo's API, target the **live contracts verbatim** (paths,
   fields, enums). Pass it the merged repo's contract source.
