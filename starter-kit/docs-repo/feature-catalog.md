@@ -33,7 +33,7 @@ Ready-for-spec only with all of:
 - [ ] A single user story: *As a `<persona>`, I want `<capability>`, so that `<outcome>`*
 - [ ] **≥3 acceptance criteria, every one Given/When/Then**
 - [ ] ≥1 linked principle (`P-XX`)
-- [ ] ≥1 linked persona — one that already **exists** in `02-personas-and-jobs.md`
+- [ ] ≥1 linked persona — one that already **exists** in `personas-and-jobs.md`
 - [ ] An out-of-scope list (write `(none)` rather than omit it)
 - [ ] A dependencies list (same)
 

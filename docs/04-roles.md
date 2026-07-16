@@ -28,7 +28,7 @@ without a conversation.
 **A request arrives.** Someone wants something. Your first move is not to write a spec — it's to
 work out whether you understand the request well enough to write a catalog row.
 
-**Write the catalog row** in `04-feature-catalog.md`:
+**Write the catalog row** in `feature-catalog.md`:
 
 ```markdown
 ### F-HLD-015 — Hold Queue

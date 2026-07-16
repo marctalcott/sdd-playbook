@@ -46,13 +46,13 @@ Ten stages. Four gates. Below, each one in detail.
 feature. It is prose, and it is probably vague.
 
 Your job is not to write a spec yet. It is to turn the request into a **row in the feature catalog**
-(`<product>-docs/04-feature-catalog.md`) that is complete enough to specify from. A row is complete
+(`<product>-docs/feature-catalog.md`) that is complete enough to specify from. A row is complete
 when it has:
 
 - A single user story: *As a `<persona>`, I want `<capability>`, so that `<outcome>`*
 - **At least three acceptance criteria, every one of them Given/When/Then**
 - At least one linked product principle
-- At least one linked persona — one that already exists in `02-personas-and-jobs.md`
+- At least one linked persona — one that already exists in `personas-and-jobs.md`
 - An explicit out-of-scope list (write "(none)" rather than omit it)
 - An explicit dependencies list (same)
 - Status: **Ready-for-spec**
@@ -65,7 +65,7 @@ in the whole pipeline.
 If you can't fill the row, **you are not ready and no amount of AI will fix it**. Go back to the
 person who asked.
 
-> **Vocabulary check.** Every noun in your row must already exist in `05-glossary.md`. If the feature
+> **Vocabulary check.** Every noun in your row must already exist in `glossary.md`. If the feature
 > needs a word the product doesn't have yet, that's a real signal: stop and add the term to the
 > glossary as a deliberate act, with the team. Do not let a synonym in. See
 > [07 — Pitfalls](07-pitfalls.md#synonym-drift).

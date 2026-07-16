@@ -17,7 +17,7 @@
 
 feature: NNN-slug                 # e.g. 015-hold-queue                  [specify]
 title: Human-readable feature name                                     # [specify]
-catalog_ref: F-DOMAIN-NNN         # the row in 04-feature-catalog.md     [specify]
+catalog_ref: F-DOMAIN-NNN         # the row in feature-catalog.md     [specify]
 source: <product>-docs@<sha>      # docs SHA this was specified from     [specify]
 
 # draft → spec-signed-off → in-progress → signed-off → uat → shipped
@@ -171,7 +171,7 @@ compose:                                                              # [plan]
 # GATE 4 — real customers used the real thing, in a real environment.
 # Findings sort into EXACTLY TWO buckets:
 #   bugs      → back to feature.implement on THIS feature; fix the test too
-#   requests  → NEW rows in 04-feature-catalog.md. Never absorbed into this feature.
+#   requests  → NEW rows in feature-catalog.md. Never absorbed into this feature.
 # --------------------------------------------------------------------------
 uat:                                                                   # [uat]
   env: null             # e.g. "test" — where the increment was deployed

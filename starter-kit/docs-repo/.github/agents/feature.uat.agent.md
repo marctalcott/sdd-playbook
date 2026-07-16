@@ -47,7 +47,7 @@ smaller-sounding job than it is. The sort *is* the discipline of this stage.
 
 - `<workspace>/<product>-docs/features/NNN-slug/manifest.yaml`: `uat.*`, `status`, `log`.
 - `<workspace>/<product>-docs/features/NNN-slug/feature.md`: Open Questions.
-- `<workspace>/<product>-docs/04-feature-catalog.md`: **new rows** for bucket-2 findings.
+- `<workspace>/<product>-docs/feature-catalog.md`: **new rows** for bucket-2 findings.
 - Deployment to a **non-production** environment only.
 
 **Forbidden — STOP if you are about to:**
@@ -162,7 +162,7 @@ Anything measured against **expectation** rather than the signed spec. "Could it
 a hold while I'm away." "I assumed it'd tell me roughly how long the wait is." "What if it emailed
 me."
 
-These are **feature requests**. Each one gets a **new row in `04-feature-catalog.md`**:
+These are **feature requests**. Each one gets a **new row in `feature-catalog.md`**:
 
 ```yaml
 requests:

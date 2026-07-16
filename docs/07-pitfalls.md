@@ -22,7 +22,7 @@ because it learned from a world where both exist.
 to talk about your own system, every week, forever.
 
 **The rule:** *Names are law.* One glossary. One name per concept. If a spec needs a word that isn't
-in `05-glossary.md`, that is a **signal to add the term deliberately, with the team** — not a licence
+in `glossary.md`, that is a **signal to add the term deliberately, with the team** — not a licence
 to coin a synonym. Reject any generated artifact that invents one; put the glossary rows in the prompt
 and regenerate.
 
@@ -91,7 +91,7 @@ output.
 | Pitfall | How it shows up | Fix |
 |---|---|---|
 | **Thin acceptance criteria** | "It should work well" | Reject. Given/When/Then or it isn't a criterion. These become the tests. |
-| **Invented persona** | Spec references a persona not in `02-personas-and-jobs.md` | Reject. Personas aren't created in spec land. |
+| **Invented persona** | Spec references a persona not in `personas-and-jobs.md` | Reject. Personas aren't created in spec land. |
 | **Principle skipped** | Spec quietly violates a linked principle | Put the principle's **full text** in the prompt, regenerate. |
 | **Out-of-scope quietly added** | The spec has a feature you didn't ask for | Reject. Models are enthusiastic. Move it to the catalog as its own row. |
 | **Hard-coded business values** | Spec says `5000` for a cap | Reject. Reference config by name. A literal in a spec becomes a literal in production. |

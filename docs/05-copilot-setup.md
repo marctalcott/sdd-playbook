@@ -118,7 +118,7 @@ principles generate vague code. Real examples:
 > Policy values — loan periods, shelf windows, hold caps — are read from configuration by name
 > (D-002). Never inline a literal.
 > Every endpoint has a contract test before it has an implementation.
-> Domain names come from `05-glossary.md`. No synonyms.
+> Domain names come from `glossary.md`. No synonyms.
 
 **UI repo:**
 > Components call the real API. Never a mock, never a stub, never fixture data outside of tests.
@@ -287,7 +287,7 @@ the real authority:
 Catalogue, loans, and holds backend for Athenaeum. Event-sourced.
 
 ## Non-negotiable
-- Domain vocabulary comes from `../athenaeum-docs/05-glossary.md`. Never invent a synonym.
+- Domain vocabulary comes from `../athenaeum-docs/glossary.md`. Never invent a synonym.
 - A Hold names a Title, never a Copy (D-001).
 - Policy values come from config by name (D-002). Never a literal.
 - Timestamps are UTC instants (D-003). Never local time.
@@ -306,7 +306,7 @@ Catalogue, loans, and holds backend for Athenaeum. Event-sourced.
 applyTo: "src/Domain/**/*.cs"
 ---
 Aggregates never call out to infrastructure. All state changes are events.
-Event names are past tense and match `05-glossary.md` exactly.
+Event names are past tense and match `glossary.md` exactly.
 ```
 
 Rule of thumb: **`copilot-instructions.md` for facts about the repo, `.instructions.md` for rules about
@@ -320,12 +320,12 @@ a folder, and the constitution for the law.** Don't duplicate the constitution i
 Copy [`starter-kit/docs-repo/`](../starter-kit/docs-repo/) into `athenaeum-docs/` and fill it in.
 Start with:
 
-1. **`05-glossary.md`** — do this first, and do it as a team. Every term you'll use. This is the
+1. **`glossary.md`** — do this first, and do it as a team. Every term you'll use. This is the
    single highest-value hour you will spend, and doing it late means renaming things later.
-2. **`03-product-principles.md`** — 5 to 10 principles, numbered `P-01`…
-3. **`02-personas-and-jobs.md`** — who these people are.
-4. **`06-decisions.md`** — start empty. Add `D-001` the first time you decide something.
-5. **`04-feature-catalog.md`** — your first feature row.
+2. **`product-principles.md`** — 5 to 10 principles, numbered `P-01`…
+3. **`personas-and-jobs.md`** — who these people are.
+4. **`decisions.md`** — start empty. Add `D-001` the first time you decide something.
+5. **`feature-catalog.md`** — your first feature row.
 6. **`features/_template/manifest.yaml`** — copy it as-is.
 
 ---
@@ -338,7 +338,7 @@ Start with:
 │
 ├── athenaeum-docs/
 │   ├── .github/agents/              ← the 11 feature.* agents
-│   ├── 01-vision.md … 07-walkthroughs.md
+│   ├── vision.md … walkthroughs.md
 │   └── features/
 │       ├── _template/manifest.yaml
 │       └── 015-hold-queue/{feature.md, manifest.yaml}

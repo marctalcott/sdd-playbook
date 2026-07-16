@@ -26,7 +26,7 @@
 - **Adding a term** is a deliberate act. Propose it, agree it, add it. It is not a side effect of
   writing a spec.
 - **Renaming a term** means every spec that used it is now stale. Add a decision in
-  [06-decisions.md](06-decisions.md) recording why, and list the affected specs in the PR.
+  [decisions.md](decisions.md) recording why, and list the affected specs in the PR.
 - **The `Avoid` column is load-bearing.** Naming the synonyms you rejected is how you stop them
   coming back. Every one of them is a word someone reasonable will reach for.
 
@@ -48,7 +48,7 @@
 
 ## 2. Actors and personas
 
-Personas live in full in [02-personas-and-jobs.md](02-personas-and-jobs.md). This table is the
+Personas live in full in [personas-and-jobs.md](personas-and-jobs.md). This table is the
 naming authority only.
 
 | Term | Definition | Avoid |

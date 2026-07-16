@@ -47,29 +47,53 @@ One repo. No application code. It holds the vocabulary and the intent that every
 
 ```
 <product>-docs/
-│                                ── narrative: read once, changes quarterly ──
-├── 01-vision.md                 why the product exists
-├── 02-personas-and-jobs.md      who it's for, and their jobs-to-be-done
-├── 03-product-principles.md     what you'd say no to a customer over (P-01, P-02, …)
-│                                ── live: changes daily ──
-├── 04-feature-catalog.md   ★    the backlog — every feature request
-│                                ── reference: consulted constantly, never read cover to cover ──
-├── 05-glossary.md          ★    THE canonical vocabulary
-├── 06-decisions.md         ★    the decisions, with the reasoning (D-001, D-002, …)
-│                                ── examples ──
-├── 07-walkthroughs.md           end-to-end narratives
-└── features/                    ← layer 2 lives here
+├── README.md                 the reading order, and why it's that order
+│
+├── vision.md                 why the product exists          ─┐ narrative:
+├── personas-and-jobs.md      who it's for, and their jobs      │ read once,
+├── product-principles.md     what you'd say no over (P-01, …) ─┘ changes quarterly
+│
+├── feature-catalog.md   ★    the backlog — every request      ── live: changes daily
+│
+├── glossary.md          ★    THE canonical vocabulary        ─┐ reference: looked up
+├── decisions.md         ★    the decisions, with the why      ─┘ constantly, never read through
+│
+├── walkthroughs.md           end-to-end narratives            ── examples
+│
+└── features/                 ← layer 2 lives here
     ├── _template/manifest.yaml
-    └── NNN-slug/
+    └── 015-hold-queue/       ← numbered, and the number does real work
 ```
 
-**The numbers group by volatility, not by importance.** Files 01–03 are narrative — a newcomer reads
-them once, and they change a few times a year. 04 is the only *live* document: it moves every day.
-05–06 are reference — nobody reads a glossary front to back, you look things up in it, constantly.
+### Why the docs have no numbers and the features do
 
-Don't read that ordering as a work order. **When you set this up, you write 05 first** — see
-[06 — Rollout](06-rollout.md). The glossary is the highest-numbered file you'll write on day one,
-and that's not a contradiction: numbering serves the reader, not the author.
+This trips people up, so it's worth being explicit. The rule is:
+
+> **Number the things you have many of. Name the things you have one of.**
+
+There is exactly **one** glossary. Calling it `05-glossary.md` would add a digit that correlates
+with nothing — it points at no other artifact, it isn't an identifier, it's a sort key. And it has
+real costs: it has to be maintained, it's cited by name in every agent prompt, and it forces a
+migration every time the set of documents changes. The only thing it buys is a suggested reading
+order, and a `README.md` does that better because it can explain *why* that order. A filename can't.
+
+The `015` in `features/015-hold-queue/` is the opposite — it earns its place several times over:
+
+```
+015-hold-queue/           the manifest
+015-hold-queue-api        the spec folder in the API repo
+015-hold-queue-ui         the spec folder in the UI repo
+feat/015-hold-queue-api   the branch
+@015-us1                  the test tag the done-gate greps for
+```
+
+**That number is a cross-repo correlation key.** It's the thread tying a test tag in one repo back
+to a spec folder in another, and it's how you find every artifact belonging to one feature by
+grepping a single string. There are many features, and the number does work in every one of them.
+
+Reading order isn't lost — it just moved to the docs repo's `README.md`, where it belongs. And note
+that it is **not** a work order: when you set this up you write `glossary.md` first
+([06 — Rollout](06-rollout.md)), long before there's a vision statement worth reading.
 
 ### Which of these the AI actually reads
 
@@ -77,13 +101,13 @@ Worth knowing precisely, because it tells you where accuracy is load-bearing:
 
 | Document | Read by |
 |---|---|
-| `05-glossary.md` | **Agents, constantly** — the single most-loaded file in the system |
-| `04-feature-catalog.md` | **Agents** — `@feature.specify` refuses to run on an incomplete row |
-| `06-decisions.md` | **Agents** — constraining decisions get pulled into every spec and cited |
-| `02-personas-and-jobs.md` | **Agents** — referenced personas are assembled into the spec verbatim |
-| `03-product-principles.md` | **Agents** — a linked principle's full text goes into the spec |
-| `01-vision.md` | Humans only |
-| `07-walkthroughs.md` | Humans only |
+| `glossary.md` | **Agents, constantly** — the single most-loaded file in the system |
+| `feature-catalog.md` | **Agents** — `@feature.specify` refuses to run on an incomplete row |
+| `decisions.md` | **Agents** — constraining decisions get pulled into every spec and cited |
+| `personas-and-jobs.md` | **Agents** — referenced personas are assembled into the spec verbatim |
+| `product-principles.md` | **Agents** — a linked principle's full text goes into the spec |
+| `vision.md` | Humans only |
+| `walkthroughs.md` | Humans only |
 
 The five the agents load are the ones where a sloppy sentence becomes a sloppy spec, then sloppy
 code. The two humans-only files matter for a different reason: they're how a new joiner gets their
@@ -99,12 +123,12 @@ The glossary does.
 
 The three starred files do the daily work.
 
-**`04-feature-catalog.md` — the backlog.** Every feature request, in a fixed shape. A row must be
+**`feature-catalog.md` — the backlog.** Every feature request, in a fixed shape. A row must be
 complete before it can be specified: user story, ≥3 Given/When/Then acceptance criteria, linked
 principles, linked personas, out-of-scope, dependencies, status. Statuses run
 `Idea → Ready-for-spec → Spec'd → In-progress → Shipped`.
 
-**`05-glossary.md` — the vocabulary.** The most important file in the system. Every domain term,
+**`glossary.md` — the vocabulary.** The most important file in the system. Every domain term,
 every enum, every identifier, every state transition. **One name per concept, and no synonyms.**
 
 Why this file matters more than it looks: an AI generating a spec will happily write `order` where
@@ -113,7 +137,7 @@ codebase has two words for one thing and every future conversation carries a tra
 compounds. This is the most common way spec-driven development quietly fails, and the glossary is the
 only defence.
 
-**`06-decisions.md` — the decisions. The reason this repo exists.**
+**`decisions.md` — the decisions. The reason this repo exists.**
 
 Numbered, dated, and carrying the *reasoning* rather than just the ruling: *a Hold is placed on a
 Title, never a Copy* (D-001), *policy values live in config* (D-002). Specs cite them by number.
@@ -175,7 +199,7 @@ that makes the pipeline mechanical.
 ```yaml
 feature: 015-hold-queue
 title: Hold Queue
-catalog_ref: F-HLD-015                # the row in 04-feature-catalog.md
+catalog_ref: F-HLD-015                # the row in feature-catalog.md
 source: <product>-docs@a1b2c3d        # the exact docs version this was specified from
 
 status: draft                         # draft → spec-signed-off → in-progress
@@ -343,7 +367,7 @@ test that gates production in stage 7.
 ├── <product>.code-workspace          ← VS Code multi-root file. See doc 05.
 │
 ├── <product>-docs/
-│   ├── 01-vision.md … 07-walkthroughs.md
+│   ├── vision.md … walkthroughs.md
 │   ├── .github/agents/               ← the feature.* Copilot agents live here
 │   └── features/
 │       ├── _template/manifest.yaml

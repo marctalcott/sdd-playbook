@@ -77,21 +77,24 @@ the pipeline stays mechanical instead of remembered.
 
 | File | Do this |
 |---|---|
-| **`05-glossary.md`** | **Fill this in FIRST, as a team, before your first spec.** Most spec-driven development failures are vocabulary failures. |
-| `04-feature-catalog.md` | Your backlog. Has the completeness bar `@feature.specify` enforces, plus a worked example and a full example backlog. |
-| `06-decisions.md` | **The reason the docs repo exists.** Append-only — supersede, never delete. Five worked examples including a superseded pair; delete them once you have real ones. |
+| **`glossary.md`** | **Fill this in FIRST, as a team, before your first spec.** Most spec-driven development failures are vocabulary failures. |
+| `feature-catalog.md` | Your backlog. Has the completeness bar `@feature.specify` enforces, plus a worked example and a full example backlog. |
+| `decisions.md` | **The reason the docs repo exists.** Append-only — supersede, never delete. Five worked examples including a superseded pair; delete them once you have real ones. |
 
-Yes, the glossary is numbered 05 and you write it first. The numbers group by **volatility** — 01–03
-narrative, 04 live, 05–06 reference, 07 examples — so they serve a newcomer reading the repo, not the
-person setting it up. See [03 — Structure](../docs/03-structure.md).
+`docs-repo/README.md` ships too — it carries the reading order and explains the four kinds of file.
+That's where reading order belongs, rather than encoded in filename prefixes: **number the things you
+have many of, name the things you have one of.** There's one glossary, so it's `glossary.md`. There
+are many features, so they're `features/015-hold-queue/` — and *that* number is a real identifier,
+shared across both repos' spec folders, both branch names, and the `@015-us1` test tag. See
+[03 — Structure](../docs/03-structure.md#why-the-docs-have-no-numbers-and-the-features-do).
 
 The other four aren't templated — they're too project-specific to fake usefully. Create them as plain
 markdown, but know that two of them the **agents will actually read**:
 
-- **`02-personas-and-jobs.md`** and **`03-product-principles.md`** — a referenced persona and a
+- **`personas-and-jobs.md`** and **`product-principles.md`** — a referenced persona and a
   linked principle get assembled into every spec *verbatim*. Write these properly; they end up in
   generated output.
-- **`01-vision.md`** and **`07-walkthroughs.md`** — humans only. Useful for onboarding, but no agent
+- **`vision.md`** and **`walkthroughs.md`** — humans only. Useful for onboarding, but no agent
   loads them, so a beautiful vision statement won't improve what the model generates.
 
 **Seven docs, and nothing else.** There's no `current-state`, `target-state`, or `roadmap` here on
