@@ -197,7 +197,7 @@ customer agreed to, quietly, at plan time, is exactly the failure the signoff ga
 ## 5. Tasks — Tech Lead
 
 Each repo's Spec Kit can now generate a `tasks.md`: T001, T002, … a dependency-ordered list. But
-remember Problem 1 — that list is **horizontal**. It has no idea which of those tasks finish story 1.
+remember Problem 2 — that list is **horizontal**. It has no idea which of those tasks finish story 1.
 
 ```
 @feature.tasks 015-hold-queue

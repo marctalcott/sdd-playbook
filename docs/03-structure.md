@@ -80,15 +80,37 @@ codebase has two words for one thing and every future conversation carries a tra
 compounds. This is the most common way spec-driven development quietly fails, and the glossary is the
 only defence.
 
-**`09-decisions.md` — the decisions.** Numbered, dated, with rationale: *a Hold is placed on a Title,
-never a Copy* (D-001), *policy values live in config* (D-002). Specs cite them. When a decision
-changes, you can find every spec that assumed it.
+**`09-decisions.md` — the decisions. The reason this repo exists.**
 
-> **Why a separate repo?** Because it makes "the docs are the source of truth" true rather than
-> aspirational. Docs in a code repo become that repo's docs and quietly start describing that repo.
-> Docs in their own repo can be cited with a commit SHA — `source: <product>-docs@a1b2c3d` — which
-> means a spec can name the exact version of the truth it was generated from. That's what makes
-> regeneration reproducible.
+Numbered, dated, and carrying the *reasoning* rather than just the ruling: *a Hold is placed on a
+Title, never a Copy* (D-001), *policy values live in config* (D-002). Specs cite them by number.
+
+This is the file that answers "why on earth is it done that way?" — and it answers it for two
+different readers at once. **A person** joining the project reads it and learns not just what the
+rules are but what each one was protecting against and what it traded away, which is what lets them
+argue with a rule instead of nervously working around it. **The AI** reads it too: `feature.specify`
+pulls every constraining decision into the feature spec automatically and cites it, so a plan
+generated today honours a call made a year ago by someone who has since left.
+
+It is **append-only**. You supersede, never delete — see the worked `D-004 → D-005` pair in the
+starter kit, where the superseded entry stays *because* the reasoning that killed it is the valuable
+part. And because specs cite decisions by number, when one is superseded you can find every spec
+that assumed it. `feature.analyze` checks exactly that.
+
+> **Why a separate repo? Three reasons, and the third is the one that matters.**
+>
+> **It stays honest.** Docs living in a code repo become *that repo's* docs. They drift into
+> describing that service, and the API's copy and the UI's copy of "the truth" diverge inside a
+> month. A repo with no code in it cannot quietly become one service's documentation.
+>
+> **It's citable.** Docs in their own repo can be pinned with a commit SHA —
+> `source: <product>-docs@a1b2c3d` — so a spec names the exact version of the truth it was generated
+> from. That's what makes regeneration reproducible rather than aspirational.
+>
+> **It outlives the code.** Services get rewritten, replaced, and deleted. The reasoning about
+> *what the product is and why it works this way* is the asset that survives all of that — and if
+> you keep it inside a service, you throw it away the day you retire the service. Give it somewhere
+> to live that nothing is going to decommission.
 
 ---
 

@@ -121,7 +121,7 @@ discover it rather than telling them.
 ## Week 4 — The second repo, and the seam
 
 **Who:** add the Tech Lead.
-**Goal:** feel Problem 1, then fix it.
+**Goal:** feel Problem 2 — the repo seam — then fix it.
 
 Pick a feature that genuinely touches **two** repos. Run stock Spec Kit in both, independently, the
 way you have been.
