@@ -21,9 +21,9 @@ handoffs:
 
 Supported forms:
 
-- `@feature.adopt 015-watch-list` — an existing live spec folder name (or just its `NNN`),
+- `@feature.adopt 015-hold-queue` — an existing live spec folder name (or just its `NNN`),
   present in at least one repo. **The primary form.**
-- `@feature.adopt F-LST-015` — a feature-catalog ID; you resolve it to its existing on-disk
+- `@feature.adopt F-HLD-015` — a feature-catalog ID; you resolve it to its existing on-disk
   footprint.
 
 Flags:
@@ -312,7 +312,7 @@ can't be resolved — both need a human before a re-run.
   annotations are authoritative. And **the `state` marker is what tells every downstream stage
   which repos are frozen and which still need work** — get it wrong and `feature.plan` will
   cheerfully re-plan shipped code.
-- **Names are law.** A `Listing` means the same thing in the docs, the API, and the UI. If
+- **Names are law.** A `Title` means the same thing in the docs, the API, and the UI. If
   `feature.md` needs a term that isn't in `08-glossary.md`, flag it — that's a signal to add it
   deliberately, with the team. Don't invent it.
 - **Never fabricate a signoff.** Not to unblock `feature.plan`, not "just as a placeholder", not

@@ -31,34 +31,35 @@ work out whether you understand the request well enough to write a catalog row.
 **Write the catalog row** in `07-feature-catalog.md`:
 
 ```markdown
-### F-LST-015 — Watch List
+### F-HLD-015 — Hold Queue
 
 **Status:** Ready-for-spec
-**Personas:** Buyer (P-BUY)
-**Principles applied:** P-02 (buyer confidence), P-07 (no dark patterns)
+**Personas:** Reader (P-RDR)
+**Principles applied:** P-01 (reader privacy), P-03 (equitable access)
 
 **User story:**
-As a Buyer, I want a list of the Listings I'm tracking, so that I can come back to
-them without searching again.
+As a Reader, I want to place a Hold on a Title whose Copies are all on loan, so
+that I get the next one returned without having to keep checking back.
 
 **Acceptance criteria:**
-- Given I am viewing a Listing, when I tap Watch, then it appears in my Watch List.
-- Given a Listing in my Watch List, when the seller reduces the price, then I receive
-  a notification within 24 hours.
-- Given a Listing in my Watch List, when it is Sold to another Buyer, then it is
-  removed from my Watch List and I am notified once.
+- Given a Title with no Copy available, when I place a Hold, then I join the Hold
+  Queue and see my position in it.
+- Given I am first in the Hold Queue, when a Copy is returned, then that Copy is
+  moved to the Shelf for me and I am notified exactly once.
+- Given a Copy is on the Shelf for me, when `HoldShelfWindowHours` elapses without
+  collection, then my Hold expires and the Copy passes to the next Reader.
 
 **Out of scope:**
-- Public "N people watching" badge
-- Sharing a Watch List with another Buyer
+- Holding a *specific* Copy — the queue is Title-level per D-001
+- Inter-library loans
 
-**Dependencies:** F-LST-001 (Listings), F-NTF-001 (Notifications)
+**Dependencies:** F-CAT-001 (Catalogue), F-NOT-004 (Notifications)
 ```
 
 **Then specify:**
 
 ```
-@feature.specify F-LST-015
+@feature.specify F-HLD-015
 ```
 
 **Then review the output properly.** Names against the glossary. Every acceptance criterion present.
@@ -69,7 +70,7 @@ Nothing added. No hard-coded numbers. Open questions flagged rather than guessed
 **Then take it to the customer.** Read the acceptance criteria out loud. Get a yes.
 
 ```
-@feature.spec-signoff 015-watch-list --by "Dana Ortiz (Acme Ops)"
+@feature.spec-signoff 015-hold-queue --by "Dana Ortiz (Athenaeum Ops)"
 ```
 
 **Then hand off to the Tech Lead** and get out of the way. Your next involvement is triaging UAT
@@ -111,7 +112,7 @@ it's wrong, that's a conversation with the Feature Manager and the customer — 
 **Plan:**
 
 ```
-@feature.plan 015-watch-list
+@feature.plan 015-hold-queue
 ```
 
 Per-repo sub-agents produce `plan.md`, `research.md`, `data-model.md`, and `contracts/`, each inside
@@ -125,7 +126,7 @@ a code review? This is the stage where a feature either fits the system or quiet
 **Slice the tasks:**
 
 ```
-@feature.tasks 015-watch-list
+@feature.tasks 015-hold-queue
 ```
 
 Map each repo's flat task list into per-story slices, api before ui. Check the arithmetic.
@@ -133,7 +134,7 @@ Map each repo's flat task list into per-story slices, api before ui. Check the a
 **Audit:**
 
 ```
-@feature.analyze 015-watch-list
+@feature.analyze 015-hold-queue
 ```
 
 **Then hand the work order to the developers.** Your job during the inner loop is to unblock, not to
@@ -171,7 +172,7 @@ feature.
 **Pick up one story.** Not a feature — a story.
 
 ```
-@feature.implement 015-watch-list US1
+@feature.implement 015-hold-queue US1
 ```
 
 The manifest tells you exactly which task IDs in which repos, in which order. API slice first. Then
@@ -187,7 +188,7 @@ the test is a transcription of something the customer signed.
 **When everything's signed off and UAT is clean, you ship it:**
 
 ```
-@feature.ship 015-watch-list --to prod
+@feature.ship 015-hold-queue --to prod
 ```
 
 API merges before UI. Then deploy. Then watch it.
@@ -231,13 +232,13 @@ Now, watch what happened to one sentence:
 
 ```
 Feature Manager writes, at intake:
-  "Given a Listing in my Watch List, when the seller reduces the price,
-   then I receive a notification within 24 hours."
+  "Given I am first in the Hold Queue, when a Copy is returned, then that
+   Copy is moved to the Shelf for me and I am notified exactly once."
         │
         ├──▶ carried into feature.md          (unchanged)
         ├──▶ projected into spec.md           (unchanged)
         ├──▶ mapped to tasks T004, T011       (traceable)
-        └──▶ tagged to a test  @015-us1       (executable)
+        └──▶ tagged to a test  @015-us2       (executable)
 ```
 
 **The same sentence, all the way down.** The customer signed it in stage 3. The test is a
@@ -252,7 +253,7 @@ So your job shifts from *inventing what should be true* to **auditing coverage a
 **Audit coverage first.** Does every acceptance criterion have a tagged test?
 
 ```
-@feature.analyze 015-watch-list
+@feature.analyze 015-hold-queue
 ```
 
 It checks the mapping mechanically: criterion → task → test. Gaps come back as findings. This is
@@ -264,7 +265,7 @@ completeness against the spec.
 **Then run the gate:**
 
 ```
-@feature.verify 015-watch-list US1
+@feature.verify 015-hold-queue US1
 ```
 
 It stands up the whole system per the manifest's `compose` recipe, waits for health, runs
@@ -273,7 +274,7 @@ It stands up the whole system per the manifest's `compose` recipe, waits for hea
 **Then judge:**
 
 ```
-@feature.signoff 015-watch-list US1 --by "Sam Chen"
+@feature.signoff 015-hold-queue US1 --by "Sam Chen"
 ```
 
 ### Your rules
@@ -308,9 +309,10 @@ You hold two gates. They are the only two that check the process against reality
 
 Someone reads you the acceptance criteria before anyone writes code. Your job is to disagree.
 
-You are not reviewing a technical document. You're answering: *"Given you're watching an item, when
-the seller drops the price, then you get a notification — is that right?"* You can absolutely answer
-that. You can also say "yes, but not at 3am", and that sentence, said now, is worth a fortnight.
+You are not reviewing a technical document. You're answering: *"Given you're first in the queue,
+when a copy comes back, then it's put aside for you and you're told once — is that right?"* You can
+absolutely answer that. You can also say "yes, but three days on the shelf is too long, we'd never
+get it back out again" — and that sentence, said now, is worth a fortnight.
 
 **Also review what's out of scope.** That list is what you're agreeing *not* to get. It's easier to
 argue about now than to be surprised by later.

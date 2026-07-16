@@ -80,9 +80,9 @@ codebase has two words for one thing and every future conversation carries a tra
 compounds. This is the most common way spec-driven development quietly fails, and the glossary is the
 only defence.
 
-**`09-decisions.md` — the decisions.** Numbered, dated, with rationale: *money is stored as integer
-cents* (D-001), *business values live in config* (D-002). Specs cite them. When a decision changes, you can find
-every spec that assumed it.
+**`09-decisions.md` — the decisions.** Numbered, dated, with rationale: *a Hold is placed on a Title,
+never a Copy* (D-001), *policy values live in config* (D-002). Specs cite them. When a decision
+changes, you can find every spec that assumed it.
 
 > **Why a separate repo?** Because it makes "the docs are the source of truth" true rather than
 > aspirational. Docs in a code repo become that repo's docs and quietly start describing that repo.
@@ -95,7 +95,7 @@ every spec that assumed it.
 ## Layer 2: the feature folder
 
 ```
-<product>-docs/features/015-watch-list/
+<product>-docs/features/015-hold-queue/
 ├── feature.md       ← ONE spec, for the whole feature, across all repos
 └── manifest.yaml    ← the spine
 ```
@@ -118,9 +118,9 @@ This is the one file worth understanding completely. Everything else is document
 that makes the pipeline mechanical.
 
 ```yaml
-feature: 015-watch-list
-title: Watch List
-catalog_ref: F-LST-015                # the row in 07-feature-catalog.md
+feature: 015-hold-queue
+title: Hold Queue
+catalog_ref: F-HLD-015                # the row in 07-feature-catalog.md
 source: <product>-docs@a1b2c3d        # the exact docs version this was specified from
 
 status: draft                         # draft → spec-signed-off → in-progress
@@ -137,34 +137,34 @@ spec_signoff:
 repos:
   api:
     path: <product>-api
-    spec: .specify/specs/015-watch-list-api
+    spec: .specify/specs/015-hold-queue-api
     constitution: .specify/memory/constitution.md
-    branch: feat/015-watch-list-api
+    branch: feat/015-hold-queue-api
     state: new                        # new | specified | planned | in-progress | merged
     pr: null
   ui:
     path: <product>-ui
-    spec: .specify/specs/015-watch-list-ui
+    spec: .specify/specs/015-hold-queue-ui
     constitution: .specify/memory/constitution.md
-    branch: feat/015-watch-list-ui
+    branch: feat/015-hold-queue-ui
     state: new
     pr: null
 
 # ─── Stories, slices, and the per-story gate ─────────────────────────
 phases:
   - id: P1
-    title: Watching and viewing
+    title: Joining and seeing the queue
     status: pending
     stories:
       - id: US1
-        title: As a buyer, I want to watch a listing, so that I can find it again
+        title: As a Reader, I want to place a Hold, so that I get the next Copy returned
         priority: P1
         slices:                       # THE WORK ORDER. api before ui, always.
           - { repo: api, tasks: T001-T009 }
           - { repo: ui,  tasks: T001-T006 }
         done_gate:
           status: pending             # pending → green → signed-off
-          e2e: <product>-ui/e2e/015-watch-list-us1.spec.ts
+          e2e: <product>-ui/e2e/015-hold-queue-us1.spec.ts
           e2e_tag: "@015-us1"         # the test selector
           last_run: null
         signoff:
@@ -245,7 +245,7 @@ Each code repo gets **its own Spec Kit install** and **its own constitution**:
 │   ├── memory/constitution.md         ← THIS repo's rules
 │   ├── templates/                     spec-template.md, plan-template.md, tasks-template.md
 │   └── specs/
-│       └── 015-watch-list-api/
+│       └── 015-hold-queue-api/
 │           ├── spec.md         ← the WHAT (from the Feature Manager, stage 2)
 │           ├── plan.md         ← the HOW (Tech Lead, stage 4)
 │           ├── research.md
@@ -271,9 +271,9 @@ different per repo, and that's correct.
 
 | Convention | Example | Why |
 |---|---|---|
-| Shared feature number across repos | `015-watch-list-api`, `015-watch-list-ui` | You can find every piece of feature 015 by grepping `015` |
+| Shared feature number across repos | `015-hold-queue-api`, `015-hold-queue-ui` | You can find every piece of feature 015 by grepping `015` |
 | `-api` / `-ui` suffix | | Disambiguates the two installs at a glance |
-| Branch = spec folder name | `feat/015-watch-list-api` | The branch and the spec can never be mismatched |
+| Branch = spec folder name | `feat/015-hold-queue-api` | The branch and the spec can never be mismatched |
 | Test tag `@NNN-us{n}` | `@015-us1` | **The thread from acceptance criterion to test.** The gate is literally `--grep '@015-us1'` |
 
 That last one is the one to internalise. It's how a sentence the customer signed in stage 3 becomes a
@@ -292,7 +292,7 @@ test that gates production in stage 7.
 │   ├── .github/agents/               ← the feature.* Copilot agents live here
 │   └── features/
 │       ├── _template/manifest.yaml
-│       └── 015-watch-list/
+│       └── 015-hold-queue/
 │           ├── feature.md
 │           └── manifest.yaml
 │

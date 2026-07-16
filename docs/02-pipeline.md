@@ -83,7 +83,7 @@ written the wrong document.
 You run one command:
 
 ```
-@feature.specify F-LST-001
+@feature.specify F-CAT-001
 ```
 
 It reads your catalog row and, crucially, **assembles the context around it**: the full text of every
@@ -133,15 +133,15 @@ You take the spec to the person who asked for the feature and they say yes or no
 before anyone writes a line of code.
 
 ```
-@feature.spec-signoff 015-watch-list --by "Dana Ortiz (Acme Ops)" --note "..."
+@feature.spec-signoff 015-hold-queue --by "Dana Ortiz (Athenaeum Ops)" --note "..."
 ```
 
 Practically: don't email them raw markdown. Walk them through the user stories and read the
-acceptance criteria out loud. "Given you're watching an item, when the seller drops the price, then
-you get a notification — is that right?" Given/When/Then is unusually good at this, because it's
-almost English and it's specific enough to disagree with. A customer cannot meaningfully review "the
-system shall support watch notifications." They can absolutely tell you that the notification should
-not fire at 3am.
+acceptance criteria out loud. "Given you're first in the queue, when a copy comes back, then it's
+put aside for you and you're told once — is that right?" Given/When/Then is unusually good at this,
+because it's almost English and it's specific enough to disagree with. A customer cannot
+meaningfully review "the system shall support hold notifications." They can absolutely tell you that
+three days on the shelf is too long, because they're the one who has to find space for it.
 
 Record what they accept, **including what they accept being out of scope**. That list is the thing
 you point at in six weeks.
@@ -162,7 +162,7 @@ proceed on a shrug.
 **The spec is now frozen as intent.** You do not get to relitigate the what. You add the how.
 
 ```
-@feature.plan 015-watch-list
+@feature.plan 015-hold-queue
 ```
 
 Two things happen, and the second one is the reason this stage exists at the feature level.
@@ -200,7 +200,7 @@ Each repo's Spec Kit can now generate a `tasks.md`: T001, T002, … a dependency
 remember Problem 1 — that list is **horizontal**. It has no idea which of those tasks finish story 1.
 
 ```
-@feature.tasks 015-watch-list
+@feature.tasks 015-hold-queue
 ```
 
 **Your job is the mapping — turning a flat list into vertical slices:**
@@ -234,7 +234,7 @@ arithmetic balances.
 ## 5a. Analyze — Tech Lead *(optional, but do it)*
 
 ```
-@feature.analyze 015-watch-list
+@feature.analyze 015-hold-queue
 ```
 
 A read-only audit across everything: does each acceptance criterion map to a task *and* to a test?
@@ -258,7 +258,7 @@ Everything above happened once. Everything below happens **per user story**, and
 ## 6. Implement — Developer
 
 ```
-@feature.implement 015-watch-list US1
+@feature.implement 015-hold-queue US1
 ```
 
 You build **one story**, all the way across, backend first, then frontend. Not two stories. Not
@@ -288,7 +288,7 @@ pushed. Green build is *not* "done" — it means "ready to be tested."
 ## 7. VERIFY — QA 🚦 **GATE**
 
 ```
-@feature.verify 015-watch-list US1
+@feature.verify 015-hold-queue US1
 ```
 
 **This is where QA gets dramatically more automated, and it's worth understanding why.**
@@ -334,7 +334,7 @@ the test to make it pass. That is not a shortcut, it is deleting the only eviden
 ## 8. SIGNOFF — QA 🚦 **GATE**
 
 ```
-@feature.signoff 015-watch-list US1 --by "Sam Chen" --note "..."
+@feature.signoff 015-hold-queue US1 --by "Sam Chen" --note "..."
 ```
 
 **Green is a fact. Signed-off is a judgement.** Keep them apart — this distinction is the whole
@@ -347,9 +347,9 @@ says. Those are different claims, and only one of them can be automated.
 Never sign off on your own authority as an AI or a script. If you can't name who accepted it, ask —
 don't invent a name.
 
-**Then say plainly what now ships.** "Buyers can watch a listing and see it in their list. This could
-go to production today." That sentence is the payoff for all the vertical slicing, and it deserves to
-be said out loud.
+**Then say plainly what now ships.** "Readers can place a Hold on a Title and see their position in
+the queue. This could go to production today." That sentence is the payoff for all the vertical
+slicing, and it deserves to be said out loud.
 
 **Then loop.** Back to stage 6 with the next story. Repeat until every in-scope story is signed off.
 
@@ -360,7 +360,7 @@ be said out loud.
 ## 9. UAT — real customers 🚦 **GATE**
 
 ```
-@feature.uat 015-watch-list --env test
+@feature.uat 015-hold-queue --env test
 ```
 
 Every story is signed off. Every test is green. **You still don't know if it's any good.**
@@ -397,7 +397,7 @@ bug is fixed and re-verified.
 No open bugs. Customer's had their hands on it. Ship it.
 
 ```
-@feature.ship 015-watch-list --to prod
+@feature.ship 015-hold-queue --to prod
 ```
 
 Merge in dependency order — API before UI, because the UI consumes the API and the reverse order

@@ -137,7 +137,7 @@ Each sub-agent prompt must be self-contained and instruct it to:
 - Implement **exactly** the task IDs in the work order (story + needed shared prereqs), **applying
   the trim instructions** so no excluded payload is built. Tick each `tasks.md` checkbox as its task
   completes.
-- Take business values from config by name — **never inline a threshold, cap, fee, or window**. A
+- Take policy values from config by name — **never inline a threshold, cap, or window**. A
   literal in code is a literal in production, and it's found the hard way.
 - Run the repo's build + unit/component tests + lint for the touched surface; iterate until green.
   **Do NOT run the cross-repo end-to-end suite** — that's the gate, and it isn't yours.

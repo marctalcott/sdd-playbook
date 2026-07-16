@@ -111,7 +111,7 @@ output.
 
 | Pitfall | How it shows up | Fix |
 |---|---|---|
-| **Contract drift** | API returns `listingId`, UI expects `id` | Caught at plan time it's free. Caught in the gate it's a day. **The merged side always wins.** |
+| **Contract drift** | API returns `titleId`, UI expects `id` | Caught at plan time it's free. Caught in the gate it's a day. **The merged side always wins.** |
 | **Editing shipped code to match a plan** | "The UI plan is nicer, let's change the API" | No. A merged contract is a fixed input. Change the plan. |
 | **Rewriting `spec.md` at plan time** | The what changed quietly, after the customer signed | Flag a gap as an open question. Never edit the signed spec. |
 | **Orphan tasks** | Slices + setup + excluded ≠ total | Every task is mapped, in setup, or explicitly excluded. **Silent truncation reads as "fully sliced" when it isn't.** |

@@ -196,7 +196,7 @@ or the workspace can't be resolved — all require a human to act before re-runn
   merged, closed, or pushed to it. Report what is true now, not what the manifest last recorded.
 - **Cascade is deterministic, not optimistic.** Only mark a phase or feature signed-off when every
   in-scope story truly is.
-- **Names are law.** A `Listing` means the same thing in the docs, the API, and the UI. If the
+- **Names are law.** A `Title` means the same thing in the docs, the API, and the UI. If the
   acceptance summary needs a term that isn't in the glossary, flag it — don't coin one.
 - **Upstream** is `@feature.verify` (Stage 7). **Downstream** is the next story via
   `@feature.implement`, or — once EVERY in-scope story is signed off — `@feature.uat` (Stage 9).

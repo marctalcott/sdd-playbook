@@ -43,10 +43,10 @@ uvx --from git+https://github.com/github/spec-kit.git specify init --help
 Repos as siblings. Flat.
 
 ```bash
-mkdir -p ~/src/acme && cd ~/src/acme
-git init acme-docs
-git init acme-api
-git init acme-ui
+mkdir -p ~/src/athenaeum && cd ~/src/athenaeum
+git init athenaeum-docs
+git init athenaeum-api
+git init athenaeum-ui
 ```
 
 ---
@@ -56,14 +56,14 @@ git init acme-ui
 Once per code repo. **Not** in the docs repo — the docs repo holds no code and generates no plans.
 
 ```bash
-cd ~/src/acme/acme-api
+cd ~/src/athenaeum/athenaeum-api
 specify init . --integration copilot
 ```
 
 That creates:
 
 ```
-acme-api/
+athenaeum-api/
 ├── .specify/
 │   ├── memory/constitution.md          ← this repo's rules (empty for now)
 │   ├── templates/
@@ -79,7 +79,7 @@ acme-api/
         └── …
 ```
 
-Repeat for `acme-ui`.
+Repeat for `athenaeum-ui`.
 
 **Verify it worked:** open the repo in VS Code, open Copilot Chat, type `/speckit.` and you should see
 the command list. If you don't, the prompts folder didn't land — check that `.github/prompts/` exists
@@ -113,9 +113,10 @@ This is the repo's law and it's worth an hour of the team's time. Be specific an
 principles generate vague code. Real examples:
 
 **API repo:**
-> Money is stored and transmitted as integer cents, never a decimal or float (D-001).
-> Business values — thresholds, caps, fees, windows — are read from configuration by name.
-> Never inline a literal.
+> Timestamps are stored and transmitted as UTC ISO-8601 instants (D-003). Local time is a display
+> concern and never crosses the API boundary.
+> Policy values — loan periods, shelf windows, hold caps — are read from configuration by name
+> (D-002). Never inline a literal.
 > Every endpoint has a contract test before it has an implementation.
 > Domain names come from `08-glossary.md`. No synonyms.
 
@@ -137,19 +138,19 @@ the other repo — which means it cannot reconcile a contract, cannot project a 
 cannot run a test in one repo against a service in another. Every cross-repo thing this playbook does
 would be impossible.
 
-**The fix is a multi-root workspace.** Create `~/src/acme/acme.code-workspace`:
+**The fix is a multi-root workspace.** Create `~/src/athenaeum/athenaeum.code-workspace`:
 
 ```jsonc
 {
   "folders": [
-    { "name": "docs", "path": "acme-docs" },
-    { "name": "api",  "path": "acme-api"  },
-    { "name": "ui",   "path": "acme-ui"   }
+    { "name": "docs", "path": "athenaeum-docs" },
+    { "name": "api",  "path": "athenaeum-api"  },
+    { "name": "ui",   "path": "athenaeum-ui"   }
   ],
   "settings": {
     // Make the feature.* agents visible regardless of which folder is focused.
     "chat.agentFilesLocations": {
-      "acme-docs/.github/agents": true
+      "athenaeum-docs/.github/agents": true
     }
   }
 }
@@ -160,7 +161,7 @@ see all three repos at once, and `@feature.plan` can genuinely compare the API's
 UI's.
 
 > **Sanity-check this.** In a multi-root workspace, ask Copilot Chat something that requires two repos
-> — *"list the endpoint paths in acme-api/src and every path acme-ui calls"*. If it can only see one,
+> — *"list the endpoint paths in athenaeum-api/src and every path athenaeum-ui calls"*. If it can only see one,
 > your agents will silently do half a job. Fix this before you build anything on top of it.
 
 ---
@@ -174,7 +175,7 @@ same thing).
 ### Where they go
 
 ```
-acme-docs/.github/agents/
+athenaeum-docs/.github/agents/
 ├── feature.specify.agent.md
 ├── feature.spec-signoff.agent.md
 ├── feature.plan.agent.md
@@ -281,14 +282,15 @@ Two mechanisms, different jobs:
 the real authority:
 
 ```markdown
-# acme-api
+# athenaeum-api
 
-Backend for Acme. Event-sourced, .NET.
+Catalogue, loans, and holds backend for Athenaeum. Event-sourced.
 
 ## Non-negotiable
-- Domain vocabulary comes from `../acme-docs/08-glossary.md`. Never invent a synonym.
-- Money is integer cents (D-001). Never decimal.
-- Business values come from config by name. Never a literal.
+- Domain vocabulary comes from `../athenaeum-docs/08-glossary.md`. Never invent a synonym.
+- A Hold names a Title, never a Copy (D-001).
+- Policy values come from config by name (D-002). Never a literal.
+- Timestamps are UTC instants (D-003). Never local time.
 - The full rules are in `.specify/memory/constitution.md`. Read it before writing code.
 
 ## Structure
@@ -315,7 +317,7 @@ a folder, and the constitution for the law.** Don't duplicate the constitution i
 
 ## Step 8 — Seed the docs repo
 
-Copy [`starter-kit/docs-repo/`](../starter-kit/docs-repo/) into `acme-docs/` and fill it in.
+Copy [`starter-kit/docs-repo/`](../starter-kit/docs-repo/) into `athenaeum-docs/` and fill it in.
 Start with:
 
 1. **`08-glossary.md`** — do this first, and do it as a team. Every term you'll use. This is the
@@ -331,22 +333,22 @@ Start with:
 ## The finished layout
 
 ```
-~/src/acme/
-├── acme.code-workspace              ← open THIS
+~/src/athenaeum/
+├── athenaeum.code-workspace              ← open THIS
 │
-├── acme-docs/
+├── athenaeum-docs/
 │   ├── .github/agents/              ← the 11 feature.* agents
 │   ├── 01-vision.md … 11-walkthroughs.md
 │   └── features/
 │       ├── _template/manifest.yaml
-│       └── 015-watch-list/{feature.md, manifest.yaml}
+│       └── 015-hold-queue/{feature.md, manifest.yaml}
 │
-├── acme-api/
+├── athenaeum-api/
 │   ├── .specify/{memory,templates,specs,scripts}/
 │   ├── .github/{copilot-instructions.md, prompts/}
 │   └── src/
 │
-└── acme-ui/
+└── athenaeum-ui/
     ├── .specify/{memory,templates,specs,scripts}/
     ├── .github/{copilot-instructions.md, prompts/}
     ├── e2e/
@@ -359,7 +361,7 @@ Start with:
 
 Run through this before you trust it with a real feature:
 
-- [ ] Opening `acme.code-workspace` shows all three folders in the Explorer.
+- [ ] Opening `athenaeum.code-workspace` shows all three folders in the Explorer.
 - [ ] Copilot Chat can answer a question that requires two repos at once.
 - [ ] `/speckit.` autocompletes in Chat when a code repo file is focused.
 - [ ] The agents dropdown lists your `feature.*` agents.

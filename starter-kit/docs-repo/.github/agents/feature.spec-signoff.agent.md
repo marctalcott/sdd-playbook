@@ -38,8 +38,9 @@ efficient way to waste a month.
 Your job has two halves, and they are different skills:
 
 1. **Present the spec in a form a customer can actually disagree with.** This is real work. A
-   customer cannot meaningfully review "the system shall support watch notifications." They can
-   absolutely tell you the notification shouldn't fire at 3am.
+   customer cannot meaningfully review "the system shall support hold notifications." They can
+   absolutely tell you that three days on the shelf is too long, because they're the one who has to
+   find space for it.
 2. **Record what they decided.** Faithfully. Including the parts they didn't like.
 
 You do **not** decide. You present and you record.
@@ -100,8 +101,8 @@ Produce a document a non-technical person can read in ten minutes and argue with
 **verbatim, as Given/When/Then**. Do not paraphrase them into prose. The Given/When/Then form is
 what makes them reviewable — it's almost English, and it's specific enough to disagree with.
 
-> Given a Listing in my Watch List, when the seller reduces the price, then I receive a
-> notification within 24 hours.
+> Given I am first in the Hold Queue, when a Copy is returned, then that Copy is moved to the
+> Shelf for me and I am notified exactly once.
 
 **What we are NOT building** — the out-of-scope list, in full, in plain language. **Do not skip
 this.** It is the half of the spec that causes arguments later, and it is the half customers never
@@ -133,11 +134,12 @@ would you have wanted that isn't here?"*
 
 ```yaml
 spec_signoff:
-  by: "Dana Ortiz (Acme Ops)"
+  by: "Dana Ortiz (Riverside Library)"
   at: "2026-07-02T14:30:00Z"          # ← quote it
   note: "Accepted US1-US3. Confirmed notifications are in-app only for v1 and that
-         sharing a watch list is out of scope. Asked that price-drop alerts not fire
-         overnight — added as an open question, not a scope change."
+         holding a specific Copy is out of scope (D-001). Asked whether the shelf
+         window should be shorter over the summer — added as an open question, not
+         a scope change; it is a config value (D-002) so it need not block."
   scope_reviewed: true                 # true ONLY if you walked the out-of-scope list
 ```
 

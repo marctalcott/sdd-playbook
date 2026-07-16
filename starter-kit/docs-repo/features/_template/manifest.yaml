@@ -15,7 +15,7 @@
 # "10:00:00" break the parse otherwise.
 # --------------------------------------------------------------------------
 
-feature: NNN-slug                 # e.g. 015-watch-list                  [specify]
+feature: NNN-slug                 # e.g. 015-hold-queue                  [specify]
 title: Human-readable feature name                                     # [specify]
 catalog_ref: F-DOMAIN-NNN         # the row in 07-feature-catalog.md     [specify]
 source: <product>-docs@<sha>      # docs SHA this was specified from     [specify]
@@ -180,7 +180,7 @@ uat:                                                                   # [uat]
   status: pending       # pending → in-progress → passed | bugs-found
   findings:
     bugs: []            # - { id: B1, story: US1, desc: "...", fixed_at: null, test_gap: "..." }
-    requests: []        # - { desc: "...", catalog_row: F-LST-021 }  ← must get a row
+    requests: []        # - { desc: "...", catalog_row: F-HLD-021 }  ← must get a row
 
 # --------------------------------------------------------------------------
 # SHIP — merged and deployed. api before ui, always: the UI consumes the API,

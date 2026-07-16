@@ -43,8 +43,8 @@ after.
 
 Write a decision when a choice:
 
-- constrains future specs ("money is integer cents")
-- would otherwise be re-argued every few months ("no SMS before M12")
+- constrains future specs
+- would otherwise be re-argued every few months
 - is non-obvious enough that a future reader would ask why
 - was expensive to arrive at
 
@@ -82,62 +82,98 @@ file is for decisions that cross the seam or constrain the product.
 
 ## Worked examples
 
-Delete these once you have real ones.
+> **These are from a fictional library product ("Athenaeum"), used as the running example
+> throughout this playbook. Delete them and write your own.**
 
-### D-001 — Money is integer minor units
+### D-001 — A Hold is placed on a Title, never a Copy
 
 **Status:** Accepted
-**Date:** 2026-01-15
+**Date:** 2026-02-03
 **Deciders:** Tech Lead, Feature Manager
 
 **Context:**
-Amounts appear in specs, the API, the UI, and the database. Floating-point and decimal both
-invite rounding drift across that many boundaries, and rounding drift in money is the kind of bug
-you find in an audit rather than a test.
+Readers say "can you reserve that copy for me", so the first prototype let a Hold name a specific
+Copy. Two problems surfaced within a fortnight. A named Copy could be damaged, lost, or mis-shelved,
+and the Hold then pointed at nothing — with no rule for what should happen next. And Readers holding
+the same Title could be served out of order depending on which Copy came back, which nobody could
+explain to the person who had waited longer.
 
 **Decision:**
-All monetary amounts are stored, transmitted, and computed as **integers in minor units** (cents).
-Never a float. Never a decimal. Formatting to a display string happens at the UI edge only.
+A **Hold names a Title**. The system assigns whichever Copy is returned first. A Reader cannot
+choose a Copy.
 
 **Rationale:**
-Integers are exact. Every rounding decision becomes explicit and deliberate rather than emergent.
-The cost is a small amount of ceremony at the display boundary, which is cheap and local.
+The queue stays strictly first-come-first-served, which is the property Readers actually care about
+and the one we can defend at the desk. Copy lifecycle events can never invalidate a Hold. We give up
+the ability to request a particular physical Copy — genuinely wanted by a handful of Readers, and not
+worth an unexplainable queue.
 
 **Consequences:**
-- Every API contract expresses money as an integer, with the unit in the field name.
-- A spec that writes an amount as `49.99` is a defect. It's `4999`.
-- Currency conversion needs explicit rounding rules, decided per case.
+- Hold Queue position is meaningful and can be shown to the Reader.
+- "I want the large-print edition" is not a Copy choice — large-print is a **separate Title**.
+- **A spec that gives a Hold a `CopyId` is a defect.** A `Copy` is assigned at `Ready`, not at
+  `Queued`.
+- Damaged and lost Copies need no Hold-reassignment logic at all.
 
-**Affects:** every payment feature; glossary §7 (Units and types).
+**Affects:** every hold feature (F-HLD-*); glossary §1 (Hold, Copy, Title), §4 (`HoldState`).
 
 ---
 
-### D-002 — Business values live in configuration
+### D-002 — Policy values live in configuration
 
 **Status:** Accepted
-**Date:** 2026-01-15
+**Date:** 2026-02-03
 **Deciders:** Tech Lead
 
 **Context:**
-Thresholds, caps, fees, and time windows change for business reasons, on business timescales,
-often urgently. Baked into code, each change is a deploy. Baked into a **spec**, they're worse:
-the literal propagates into code, and then nobody knows which `5000` was the payment cap and which
-was a coincidence.
+Loan periods, shelf windows, and hold caps change for library-policy reasons, on policy timescales,
+often at short notice — term time, holidays, a branch closure. Baked into code, each change is a
+deploy. Baked into a **spec**, it's worse: the literal propagates into the code, and six months
+later nobody can tell which `72` was the shelf window and which was a coincidence.
 
 **Decision:**
-Business and tuning values are defined in configuration and referenced **by name** — in specs, in
-plans, and in code. **A literal business value in a spec is a defect.**
+Policy and tuning values are defined in configuration and referenced **by name** — in specs, in
+plans, and in code. **A literal policy value in a spec is a defect.**
 
 **Rationale:**
-Named values are self-documenting and greppable. Changing one is a config change, not a release.
-The spec stays true across the change.
+Named values are self-documenting and greppable. Changing one becomes a config change rather than a
+release. Crucially, the spec stays *true* across the change — which is the whole premise of
+generating from specs.
 
 **Consequences:**
-- Specs say "capped at `MaxCardAmount`", never "capped at 5000".
-- Every such key is listed in glossary §6.
+- Specs say "expires after `HoldShelfWindowHours`", never "expires after 72 hours".
+- Every such key is listed in glossary §6, with its default.
 - Tests reference the config, not a hard-coded expectation.
 
 **Affects:** every spec; every repo constitution.
+
+---
+
+### D-003 — Timestamps are UTC instants
+
+**Status:** Accepted
+**Date:** 2026-02-10
+**Deciders:** Tech Lead
+
+**Context:**
+Branches sit in one timezone today, but the shelf window is measured in hours and spans overnight
+and daylight-saving boundaries. A Hold that expires an hour early because the clocks moved is a
+Reader losing a book they queued three weeks for.
+
+**Decision:**
+All timestamps are stored, transmitted, and computed as **UTC ISO-8601 instants**. Converting to
+library-local time is a display concern, done at the UI edge only.
+
+**Rationale:**
+Instants are unambiguous and arithmetic on them is safe across DST. The cost is formatting ceremony
+at the boundary, which is cheap and local.
+
+**Consequences:**
+- Every API contract expresses a time as a UTC instant.
+- "Expires at end of day" is not expressible without a stated timezone — say which.
+- Durations are whole hours, never "until tomorrow".
+
+**Affects:** glossary §7 (Units and types); every feature with a deadline.
 
 ---
 

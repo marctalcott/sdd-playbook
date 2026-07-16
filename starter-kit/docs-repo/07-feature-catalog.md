@@ -47,7 +47,7 @@ Ready-for-spec only with all of:
 
 ## ID convention
 
-`F-<DOMAIN>-<NNN>` — e.g. `F-LST-015`. The domain prefix is yours to choose; keep it to three
+`F-<DOMAIN>-<NNN>` — e.g. `F-HLD-015`. The domain prefix is yours to choose; keep it to three
 letters and keep the list short.
 
 ---
@@ -59,7 +59,7 @@ letters and keep the list short.
 
 **Status:** Idea | Ready-for-spec | Spec'd | In-progress | Shipped | Superseded
 **Personas:** P-XXX
-**Principles applied:** P-01, P-07
+**Principles applied:** P-01, P-03
 **Requested by:** {who asked, and when}
 **Source:** {customer conversation | support ticket | UAT of F-XXX-NNN}
 
@@ -84,37 +84,41 @@ As a {persona}, I want {capability}, so that {outcome}.
 
 ## Worked example
 
-Delete this once you have real rows. It's here so the shape is unambiguous.
+From the fictional library product used throughout this playbook. **Delete it once you have real
+rows** — it's here so the shape and the level of precision are unambiguous.
 
-### F-LST-015 — Watch List
+### F-HLD-015 — Hold Queue
 
 **Status:** Ready-for-spec
-**Personas:** P-BUY (Buyer)
-**Principles applied:** P-02 (buyer confidence), P-07 (no dark patterns)
-**Requested by:** Dana Ortiz (Acme Ops), 2026-06-28
+**Personas:** P-RDR (Reader)
+**Principles applied:** P-01 (reader privacy), P-03 (equitable access)
+**Requested by:** Dana Ortiz (Riverside Library), 2026-06-28
 **Source:** customer conversation
 
 **User story:**
-As a Buyer, I want a list of the Listings I'm tracking, so that I can come back to them without
-searching again.
+As a Reader, I want to place a Hold on a Title whose Copies are all on loan, so that I get the next
+one returned without having to keep checking back.
 
 **Acceptance criteria:**
-- Given I am viewing a Listing, when I tap Watch, then it appears in my Watch List.
-- Given a Listing in my Watch List, when the Seller reduces the price, then I receive exactly one
-  notification within 24 hours.
-- Given a Listing in my Watch List, when it is Sold to another Buyer, then it is removed from my
-  Watch List and I am notified once.
-- Given a Listing I own, when I view it, then I cannot Watch it.
+- Given a Title with no Copy available, when I place a Hold, then I join the Hold Queue and see my
+  position in it.
+- Given I am first in the Hold Queue, when a Copy is returned, then that Copy is moved to the Shelf
+  for me and I am notified exactly once.
+- Given a Copy is on the Shelf for me, when `HoldShelfWindowHours` elapses without collection, then
+  my Hold expires and the Copy passes to the next Reader in the queue.
+- Given a Title I already have on Loan, when I view it, then I cannot place a Hold.
 
 **Out of scope:**
-- A public "N people watching" badge
-- Sharing a Watch List with another User
+- Holding a *specific* Copy — the queue is Title-level per D-001
+- Inter-library loans (a Hold never spans branches in v1)
 - Email notifications (in-app only for v1)
+- Suspending a Hold while on holiday
 
-**Dependencies:** F-LST-001 (Listings), F-NTF-001 (Notifications)
+**Dependencies:** F-CAT-001 (Catalogue), F-NOT-004 (Notifications)
 
-**Notes:** "exactly one" in criterion 2 is deliberate — an early prototype double-fired on a single
-price change.
+**Notes:** "exactly one" in criterion 2 is deliberate — an early prototype fired twice when two
+Copies were returned in the same minute. `HoldShelfWindowHours` is referenced by name per D-002; its
+default lives in glossary §6.
 
 ---
 

@@ -160,7 +160,7 @@ Bring up, per `manifest.compose`, as background processes:
    returns 200** before doing anything else. Do not assume; poll.
 2. **Workers** — every entry in `compose.workers`, without exception. These have no port to
    poll, so confirm from their startup logs that they connected and are consuming. The read
-   models the gate asserts on (e.g. a `Listing` projection) do not populate without them.
+   models the gate asserts on (e.g. a `Title` projection) do not populate without them.
 3. **UI** — `compose.ui.cmd` from `compose.ui.cwd`; wait for `compose.ui.url` to serve.
 
 Capture each service's startup log. **If any service fails to start, STOP and report which** —

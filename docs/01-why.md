@@ -14,7 +14,7 @@ source of the whole difficulty, because **a real feature is not shaped like a re
 
 Take a plain user story:
 
-> As a buyer, I want to see the items I'm watching, so I can come back to them.
+> As a reader, I want to join the queue for a book that's on loan, so I get the next one back.
 
 Delivering that means a backend endpoint, a frontend screen, and a test that drives the screen
 against the endpoint. Three repos, or at minimum two. Now run Spec Kit in each of them. The backend
@@ -100,13 +100,13 @@ The coordinating layer says **what** and **in what order**. The repo says **how*
 The pipeline is heavy. It is meant to be — it is protecting you against building the wrong thing for
 four weeks. But not every change deserves it. **Bypass all of this for:**
 
-- Copy and content fixes
+- Wording and content fixes
 - Bug fixes that don't change a contract
 - Internal refactors with no behaviour change
 - Dependency upgrades
 
 **Use it for** anything that changes user-visible behaviour, an API contract, a database schema, or
-money movement.
+anything you'd have to explain to a regulator or an auditor.
 
 The honest failure mode here is the opposite of what people expect. Teams don't reject this process
 because it's too heavy for small changes — they discover that on their own within a week. They reject

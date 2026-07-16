@@ -18,7 +18,7 @@ handoffs:
 
 Supported forms:
 
-- `@feature.specify F-LST-015` — a feature-catalog ID. **The primary form.**
+- `@feature.specify F-HLD-015` — a feature-catalog ID. **The primary form.**
 - `@feature.specify "<free-text description>"` — you will still require the catalog row to
   exist (see step 2). Free text only helps you find the row.
 
@@ -186,7 +186,7 @@ Use `blocked` only when the catalog row is missing/incomplete or the workspace c
   annotations are authoritative.
 - **A feature that touches one repo is fine.** Set `--repos api`. Don't manufacture a UI slice
   the catalog row didn't ask for.
-- **Names are law.** A `Listing` means the same thing in the docs, the API, and the UI. If the
+- **Names are law.** A `Title` means the same thing in the docs, the API, and the UI. If the
   spec needs a term that isn't in `08-glossary.md`, that's a signal to add it deliberately, with
   the team — flag it, don't invent it.
 - **Your output is going to a customer next.** Write it so a non-technical person can disagree

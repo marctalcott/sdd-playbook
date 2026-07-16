@@ -17,14 +17,14 @@ process until you know what the ten stages are.
 | **`example.code-workspace`** | `<workspace>/<product>.code-workspace` | The multi-root workspace — **the file that lets Copilot see across repos** |
 
 ```bash
-# from <workspace>/, with acme-docs, acme-api, acme-ui as siblings
-cp -r sdd-playbook/starter-kit/docs-repo/.       acme-docs/
-cp -r sdd-playbook/starter-kit/code-repo/.       acme-api/
-cp -r sdd-playbook/starter-kit/code-repo/.       acme-ui/
-cp    sdd-playbook/starter-kit/example.code-workspace  acme.code-workspace
+# from <workspace>/, with athenaeum-docs, athenaeum-api, athenaeum-ui as siblings
+cp -r sdd-playbook/starter-kit/docs-repo/.       athenaeum-docs/
+cp -r sdd-playbook/starter-kit/code-repo/.       athenaeum-api/
+cp -r sdd-playbook/starter-kit/code-repo/.       athenaeum-ui/
+cp    sdd-playbook/starter-kit/example.code-workspace  athenaeum.code-workspace
 ```
 
-Then find-and-replace `<product>` → `acme` and open `acme.code-workspace`.
+Then find-and-replace `<product>` → `athenaeum` and open `athenaeum.code-workspace`.
 
 **Spec Kit is NOT in this kit** — install it per code repo with
 `specify init . --integration copilot`. See [05 — Setup](../docs/05-copilot-setup.md).

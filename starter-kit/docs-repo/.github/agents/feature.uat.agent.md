@@ -107,7 +107,7 @@ Record:
 uat:
   env: test
   deployed_at: "2026-07-08T09:00:00Z"     # ← quote it
-  participants: ["Dana Ortiz (Acme Ops)", "Raj Patel (Acme Field)"]
+  participants: ["Dana Ortiz (Athenaeum Ops)", "Raj Patel (Athenaeum Field)"]
   status: in-progress
 ```
 
@@ -117,10 +117,10 @@ Set the feature `status: uat`.
 
 Give them a **task**, not a tour:
 
-> "You're looking for a compact excavator under £30k. Find three you'd consider and keep track of
-> them so you can compare them tomorrow."
+> "You want to read the new Le Guin biography. Every copy is out on loan. Get yourself in line for
+> one, and come back tomorrow to see where you've got to."
 
-**Not:** "Here's the new Watch List feature, let me show you how it works."
+**Not:** "Here's the new Hold Queue feature, let me show you how it works."
 
 The difference is the whole gate. The second version tells them what you built and how you expect
 it to be used, and they will dutifully use it that way and tell you it's fine. The first version
@@ -142,9 +142,9 @@ says X and it does Y, that's a bug.
 ```yaml
 bugs:
   - id: B1
-    story: US1
-    desc: "Price-drop notification fired twice for one price change"
-    test_gap: "@015-us1 asserts a notification arrives; nothing asserts EXACTLY ONE"
+    story: US2
+    desc: "Ready notification fired twice when two Copies were returned in the same minute"
+    test_gap: "@015-us2 asserts a notification arrives; nothing asserts EXACTLY ONE per Hold"
     fixed_at: null
 ```
 
@@ -158,15 +158,16 @@ closed when the gate is green *on a test that would have caught it*.
 
 #### Bucket 2 — Requests: "could it also…"
 
-Anything measured against **expectation** rather than the signed spec. "Could it also sort by
-date." "I assumed it'd remember my filter." "What if it emailed me."
+Anything measured against **expectation** rather than the signed spec. "Could it also let me pause
+a hold while I'm away." "I assumed it'd tell me roughly how long the wait is." "What if it emailed
+me."
 
 These are **feature requests**. Each one gets a **new row in `07-feature-catalog.md`**:
 
 ```yaml
 requests:
-  - desc: "Sort the watch list by date added"
-    catalog_row: F-LST-021
+  - desc: "Suspend a Hold while the Reader is on holiday, keeping queue position"
+    catalog_row: F-HLD-021
 ```
 
 **`catalog_row` is mandatory.** A request without one is an idea you've quietly dropped on the

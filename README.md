@@ -97,7 +97,7 @@ that repo. A real feature crosses repos. So a thin coordination layer sits above
 exactly two files per feature: a cross-repo spec, and a manifest. Everything else stays down in the
 repos where it belongs.
 
-**4. Names are law.** A `Listing` means the same thing in the product docs, in the API, in the UI,
+**4. Names are law.** A `Title` means the same thing in the product docs, in the API, in the UI,
 and in the test. One glossary, and nobody is allowed to invent a synonym — not a person, and
 especially not an AI. Most spec-driven development failures are, at bottom, vocabulary failures.
 
@@ -122,11 +122,11 @@ This playbook was extracted from a working three-repo system and generalised. Wh
 
 | Placeholder | Meaning | Example |
 |---|---|---|
-| `<product>-docs` | The product docs repo — source of truth, no code | `acme-docs` |
-| `<product>-api` | A backend code repo | `acme-api` |
-| `<product>-ui` | A frontend code repo | `acme-web` |
-| `<workspace>` | The folder holding all of the above as siblings | `~/src/acme` |
-| `NNN-slug` | A feature's shared number and short name | `015-watch-list` |
+| `<product>-docs` | The product docs repo — source of truth, no code | `athenaeum-docs` |
+| `<product>-api` | A backend code repo | `athenaeum-api` |
+| `<product>-ui` | A frontend code repo | `athenaeum-web` |
+| `<workspace>` | The folder holding all of the above as siblings | `~/src/athenaeum` |
+| `NNN-slug` | A feature's shared number and short name | `015-hold-queue` |
 | `US{n}` | A user story within a feature | `US1`, `US2` |
 
 The pipeline does not care whether you have two repos or five. It cares that there is more than one,

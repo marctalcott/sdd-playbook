@@ -231,7 +231,7 @@ needed branch isn't checked out — each requires a human to act before re-runni
 - **The customer signed the spec. You did not.** Planning that quietly reshapes the WHAT
   invalidates the signature and nobody finds out until UAT. Surface gaps as Open Questions
   instead.
-- **Names are law.** A `Listing` means the same thing in the docs, the API, and the UI. If the
+- **Names are law.** A `Title` means the same thing in the docs, the API, and the UI. If the
   plan needs a term that isn't in `08-glossary.md`, that's a signal to add it deliberately, with
   the team — flag it, don't invent it.
 - **Config keys, not literals.** Any number a business person might want to change later is a

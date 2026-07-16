@@ -162,7 +162,7 @@ Each week earns the next:
 
 | Week | You feel | So you want |
 |---|---|---|
-| 1 | "We disagree about what a Listing is" | A glossary |
+| 1 | "We disagree about what a Title is" | A glossary |
 | 2 | "The customer changed the spec in five minutes, before we'd built it" | The spec signoff gate |
 | 3 | "The test is just the acceptance criterion" | The tag convention |
 | 4 | "Two repos, no answer to 'is it done'" | The manifest |
