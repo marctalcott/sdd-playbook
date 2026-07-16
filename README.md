@@ -47,36 +47,64 @@ step. This playbook is the machinery for (a), (b), and (c).
 
 Concretely, one feature moves like this:
 
-```
-                          ┌──────────── outer loop: per feature ─────────────┐
-                          │                                                  │
-  request ──▶ Intake ──▶ Specify ──▶ [SPEC SIGNOFF] ──▶ Plan ──▶ Tasks ──▶  │
-                          │                 ▲                                │
-                          │            the customer                          │
-                          │           signs the WHAT                         │
-                          │                                                  │
-                          │   ┌──── inner loop: per user story ────┐        │
-                          │   │                                     │        │
-                          └──▶│  Implement ──▶ [VERIFY] ──▶ [SIGN]  │──┐    │
-                              │      ▲            ▲          ▲      │  │    │
-                              │     Dev          QA         QA      │  │    │
-                              │      └──── red gate sends back ─────┘  │    │
-                              └─────────────────────────────────────┘  │    │
-                                              next story ◀─────────────┘    │
-                                                   │                        │
-                          all stories signed ──────┘                        │
-                                                   ▼                        │
-                                             [UAT] ──▶ Ship ──▶ production   │
-                                                │                            │
-                                          real customers                     │
-                                                │                            │
-                          new ideas ────────────┘                            │
-                                │                                            │
-                                └──▶ back to Intake as new feature requests ─┘
+```mermaid
+flowchart TB
+    REQ(["a request arrives"])
+
+    subgraph OUTER["OUTER LOOP · once per feature"]
+        direction TB
+        INTAKE["<b>1. Intake</b> · Feature Manager<br/><i>→ a catalog row</i>"]
+        SPECIFY["<b>2. Specify</b> · Feature Manager<br/><i>→ the WHAT</i>"]
+        SIGN1{{"<b>3. SPEC SIGNOFF</b> · GATE<br/><b>the CUSTOMER</b><br/><i>signs the WHAT —<br/>before any code exists</i>"}}
+        PLAN["<b>4. Plan</b> · Tech Lead<br/><i>→ the HOW + contract reconciliation</i>"]
+        TASKS["<b>5. Tasks</b> · Tech Lead<br/><i>→ vertical per-story slices</i>"]
+        INTAKE --> SPECIFY --> SIGN1 --> PLAN --> TASKS
+    end
+
+    subgraph INNER["INNER LOOP · per user story — what makes it always-shippable"]
+        direction TB
+        IMPL["<b>6. Implement</b> · Developer<br/><i>ONE story, api → ui</i>"]
+        VERIFY{{"<b>7. VERIFY</b> · GATE<br/><b>QA</b><br/><i>whole system up, gate green</i>"}}
+        SIGN2{{"<b>8. SIGNOFF</b> · GATE<br/><b>QA</b><br/><i>a human accepts the build</i>"}}
+        IMPL --> VERIFY
+        VERIFY -->|green| SIGN2
+        VERIFY -->|"<b>red</b> — never repair here"| IMPL
+        SIGN2 -->|"next story"| IMPL
+    end
+
+    UAT{{"<b>9. UAT</b> · GATE<br/><b>real CUSTOMERS</b><br/><i>the only gate where<br/>reality gets a vote</i>"}}
+    SHIP["<b>10. Ship</b> · Developer<br/><i>api merges before ui</i>"]
+    PROD(["production"])
+    NEW["<b>new catalog rows</b> ⤴<br/><i>never absorbed into this feature —<br/>they re-enter at stage 1, above</i>"]
+
+    REQ --> INTAKE
+    TASKS --> IMPL
+    SIGN2 -->|"ALL in-scope stories signed"| UAT
+    UAT -->|"bugs — fix the test too"| IMPL
+    UAT -->|"no open bugs"| SHIP --> PROD
+    UAT -->|"new ideas"| NEW
+
+    style SIGN1 fill:#ffe9c7,stroke:#b8860b,stroke-width:3px
+    style VERIFY fill:#ffe9c7,stroke:#b8860b,stroke-width:3px
+    style SIGN2 fill:#ffe9c7,stroke:#b8860b,stroke-width:3px
+    style UAT fill:#ffe9c7,stroke:#b8860b,stroke-width:3px
+    style PROD fill:#d6f5d6,stroke:#2d6a4f
+    style NEW fill:#e8f4ea,stroke:#2d6a4f
+    style INNER fill:#f4f0fa,stroke:#5b3f8c
+    style OUTER fill:#fdfbe8,stroke:#8a7b1c
 ```
 
-Four things in square brackets are **gates** — a named person says yes or no, and the process stops
-until they do. Everything else is work.
+The four **GATE** boxes are where a named person says yes or no, and the process stops until they do.
+Everything else is work.
+
+Three arrows are worth staring at, because they're where teams go wrong:
+
+- **`VERIFY --red--> Implement`.** A red gate goes back to the developer. QA never fixes the code —
+  a verifier that can repair things will repair things, and then you have no gate.
+- **`SIGNOFF --next story--> Implement`.** The inner loop closes before the next story opens. That
+  loop is the entire reason story 1 can ship while story 3 is still a sketch.
+- **`UAT --new ideas--> new catalog rows`.** Customer suggestions go back to the *front door*, not
+  into the feature that's already been signed.
 
 ---
 

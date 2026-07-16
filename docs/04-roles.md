@@ -240,16 +240,24 @@ asking the developer what it was meant to do, guessing at the edges. Most of you
 
 Now, watch what happened to one sentence:
 
+```mermaid
+flowchart TB
+    A["<b>Feature Manager writes it ONCE, at intake</b><br/>feature-catalog.md · row F-HLD-015<br/><br/><i>'Given I am first in the Hold Queue, when a Copy is returned, then that Copy is moved to the Shelf for me and I am notified exactly once.'</i>"]
+    B{{"<b>GATE · the CUSTOMER signs<br/>this exact sentence</b><br/><i>stage 3 — before any code exists</i>"}}
+    C["carried into <b>feature.md</b><br/><i>unchanged</i>"]
+    D["projected into <b>spec.md</b> (api + ui)<br/><i>unchanged</i>"]
+    E["mapped to <b>tasks T004, T011</b><br/><i>traceable</i>"]
+    F["tagged to a test <b>@015-us2</b><br/><i>executable</i>"]
+    G["<b>the gate greps @015-us2</b><br/><i>this is YOUR job — stage 7</i>"]
+
+    A --> B --> C --> D --> E --> F --> G
+
+    style A fill:#e8f4ea,stroke:#2d6a4f
+    style B fill:#ffe9c7,stroke:#b8860b,stroke-width:3px
+    style G fill:#ffe9c7,stroke:#b8860b,stroke-width:3px
 ```
-Feature Manager writes, at intake:
-  "Given I am first in the Hold Queue, when a Copy is returned, then that
-   Copy is moved to the Shelf for me and I am notified exactly once."
-        │
-        ├──▶ carried into feature.md          (unchanged)
-        ├──▶ projected into spec.md           (unchanged)
-        ├──▶ mapped to tasks T004, T011       (traceable)
-        └──▶ tagged to a test  @015-us2       (executable)
-```
+
+**The same sentence, all the way down.** Nobody re-derived it, paraphrased it, or guessed at it.
 
 **The same sentence, all the way down.** The customer signed it in stage 3. The test is a
 transcription of it, not an invention. The creative work was done by the person best placed to do it,

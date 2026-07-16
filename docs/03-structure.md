@@ -5,39 +5,83 @@
 
 ---
 
+## The workspace on disk
+
+Three repos, siblings, flat. Plus one file at the top that is easy to overlook and load-bearing:
+
+```mermaid
+flowchart TB
+    CW["<b>athenaeum.code-workspace</b><br/><i>open THIS in VS Code —<br/>not the individual folders</i>"]
+
+    subgraph DOCS["athenaeum-docs &nbsp;&nbsp;·&nbsp;&nbsp; NO APPLICATION CODE, EVER"]
+        direction TB
+        DA["<b>glossary.md</b> · <b>decisions.md</b><br/><b>feature-catalog.md</b><br/>vision · personas · principles · walkthroughs"]
+        DB[".github/agents/<br/>the 11 feature.* agents"]
+        DC["features/015-hold-queue/<br/>feature.md + manifest.yaml"]
+    end
+
+    subgraph API["athenaeum-api"]
+        direction TB
+        AA[".specify/memory/constitution.md<br/><i>this repo's law</i>"]
+        AB[".specify/specs/015-hold-queue-api/<br/>spec · plan · data-model · contracts · tasks"]
+        AC["src/"]
+    end
+
+    subgraph UI["athenaeum-ui"]
+        direction TB
+        UA[".specify/memory/constitution.md<br/><i>this repo's law</i>"]
+        UB[".specify/specs/015-hold-queue-ui/<br/>spec · plan · contracts · tasks"]
+        UC["src/ &nbsp;·&nbsp; e2e/ ← the gate tests"]
+    end
+
+    CW -.->|"makes Copilot see<br/>all three at once"| DOCS
+    CW -.-> API
+    CW -.-> UI
+
+    DB ==>|"agents reach DOWN<br/>into the code repos"| API
+    DB ==> UI
+```
+
+**Why the `.code-workspace` file matters more than it looks.** Copilot sees your *workspace*. Open one
+repo and it cannot see the others — so it cannot reconcile a contract, project a spec into two repos,
+or run a test in one repo against a service in another. Every cross-repo thing in this playbook
+depends on that one file. See [05 — Setup](05-copilot-setup.md#step-5--the-multi-root-workspace-this-is-the-important-one).
+
+---
+
 ## Three layers
 
-Everything in this playbook lives in one of three layers, and the layer decides who owns it.
+Everything lives in one of three layers, and the layer decides who owns it and what question it
+answers:
 
+```mermaid
+flowchart TB
+    L1["<b>LAYER 1</b><br/>Product docs<br/><br/><b>WHY</b><br/>+ what the words mean<br/><br/><i>Feature Manager</i>"]
+    L2["<b>LAYER 2</b><br/>The feature layer<br/><br/><b>WHAT</b><br/>across the repos<br/><br/><i>FM + Tech Lead</i>"]
+    L3["<b>LAYER 3</b><br/>The code repos<br/><br/><b>HOW</b><br/>in each repo's idiom<br/><br/><i>Tech Lead + Devs</i>"]
+
+    L1 -->|"vocabulary + constraints<br/>assembled into the spec"| L2
+    L2 -->|"projected down as spec.md<br/>+ the slice work order"| L3
+
+    MERGED["<b>⤴ the one exception</b><br/>a <b>merged</b> repo's contracts<br/>are a FIXED INPUT upward"]
+    L3 -.- MERGED
+
+    style L1 fill:#e8f4ea,stroke:#2d6a4f,stroke-width:2px
+    style L2 fill:#e7eefc,stroke:#1d3f8f,stroke-width:2px
+    style L3 fill:#fdf0e3,stroke:#9c5c1e,stroke-width:2px
+    style MERGED fill:#fff,stroke:#999,stroke-dasharray: 4 4
 ```
-┌─ LAYER 1 — Product docs ────────────────────────────────────┐
-│  <product>-docs/            no code, ever                    │
-│  Vision, personas, principles, glossary, decisions, catalog  │
-│  Owner: Feature Manager                                      │
-│  Answers: WHY, and WHAT WORDS MEAN                           │
-└──────────────────────────────────────────────────────────────┘
-                              │
-┌─ LAYER 2 — The feature layer ───────────────────────────────┐
-│  <product>-docs/features/NNN-slug/                           │
-│  feature.md      — one spec for the whole feature            │
-│  manifest.yaml   — the machine-readable spine                │
-│  Owner: Feature Manager (spec) + Tech Lead (manifest)        │
-│  Answers: WHAT this feature is, ACROSS the repos             │
-└──────────────────────────────────────────────────────────────┘
-                              │
-        ┌─────────────────────┴─────────────────────┐
-┌─ LAYER 3 — The repos ───────────────────────────────────────┐
-│  <product>-api/          <product>-ui/                       │
-│  .specify/memory/constitution.md  ← this repo's rules        │
-│  .specify/specs/NNN-slug-api/     ← spec, plan, tasks        │
-│  src/                             ← the code                 │
-│  Owner: Tech Lead (plan) + Developers (code)                 │
-│  Answers: HOW, in this repo's idiom                          │
-└──────────────────────────────────────────────────────────────┘
-```
+
+**Layers 1 and 2 both live in the docs repo.** That's deliberate — coordinating work across repos is
+a job that can only be done from somewhere above them.
 
 Layer 2 is the one stock Spec Kit doesn't have. It is thin on purpose — **two files per feature** —
 because every line you put there is a line that can drift from the repos below it.
+
+Information flows **down** — except for one thing, and it's the single most commonly violated rule in
+the playbook. Once a repo has merged its half, its real contracts stop being something the layer
+above gets to decide and become a fixed input it must conform to. **The merged contract always
+wins.** You change the plan; you never change the shipped code to match a document.
 
 ---
 
@@ -77,19 +121,45 @@ real costs: it has to be maintained, it's cited by name in every agent prompt, a
 migration every time the set of documents changes. The only thing it buys is a suggested reading
 order, and a `README.md` does that better because it can explain *why* that order. A filename can't.
 
-The `015` in `features/015-hold-queue/` is the opposite — it earns its place several times over:
+The `015` in `features/015-hold-queue/` is the opposite — it earns its place several times over.
+**Follow one number across the whole system:**
 
-```
-015-hold-queue/           the manifest
-015-hold-queue-api        the spec folder in the API repo
-015-hold-queue-ui         the spec folder in the UI repo
-feat/015-hold-queue-api   the branch
-@015-us1                  the test tag the done-gate greps for
+```mermaid
+flowchart TB
+    CAT["<b>feature-catalog.md</b><br/>row F-HLD-015"]
+    F["<b>features/015-hold-queue/</b><br/>feature.md + manifest.yaml<br/><i>docs repo</i>"]
+
+    SA["<b>.specify/specs/015-hold-queue-api/</b><br/><i>api repo</i>"]
+    SU["<b>.specify/specs/015-hold-queue-ui/</b><br/><i>ui repo</i>"]
+    BA["branch <b>feat/015-hold-queue-api</b>"]
+    BU["branch <b>feat/015-hold-queue-ui</b>"]
+    E["e2e/015-hold-queue-us1.spec.ts<br/>tagged <b>@015-us1</b>"]
+    G["done_gate runs<br/><b>--grep '@015-us1'</b><br/><i>⤴ green is recorded back<br/>in the manifest, above</i>"]
+
+    CAT -->|"@feature.specify<br/>mints the number"| F
+    F --> SA
+    F --> SU
+    SA --> BA
+    SU --> BU
+    BU --> E
+    E --> G
+
+    style CAT fill:#e8f4ea,stroke:#2d6a4f
+    style F fill:#e7eefc,stroke:#1d3f8f
+    style SA fill:#fdf0e3,stroke:#9c5c1e
+    style SU fill:#fdf0e3,stroke:#9c5c1e
+    style BA fill:#fdf0e3,stroke:#9c5c1e
+    style BU fill:#fdf0e3,stroke:#9c5c1e
+    style E fill:#fdf0e3,stroke:#9c5c1e
+    style G fill:#fdf0e3,stroke:#9c5c1e
 ```
 
 **That number is a cross-repo correlation key.** It's the thread tying a test tag in one repo back
-to a spec folder in another, and it's how you find every artifact belonging to one feature by
-grepping a single string. There are many features, and the number does work in every one of them.
+to a spec folder in another, and it closes the loop when the gate reports green. Grep `015` and you
+find every artifact belonging to this feature, in every repo, including the test that proves it.
+
+There are many features and the number does work in every one of them. `05` on a glossary does none
+of that.
 
 Reading order isn't lost — it just moved to the docs repo's `README.md`, where it belongs. And note
 that it is **not** a work order: when you set this up you write `glossary.md` first

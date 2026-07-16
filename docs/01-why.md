@@ -93,7 +93,39 @@ product, each one has an address:
 | Why is that number in config instead of the code? | **D-002** — policy changes on policy timescales, and a literal in a spec becomes a magic number nobody can identify later. |
 | Why is large-print a separate record? | **D-001** — a Hold names a Title, never a Copy. That closed the door; linked editions (F-CAT-013) is the honest way through it. |
 
-Nobody has to remember any of that. It works in two directions at once:
+Nobody has to remember any of that. **One decision, written once, reaches both readers:**
+
+```mermaid
+flowchart TB
+    D["<b>decisions.md · D-005</b><br/><br/>'A Reader may not hold a Title they<br/>already have on Loan'<br/><br/><i>+ what forced it, what it traded away,<br/>and D-004 still there, superseded,<br/>saying why the obvious answer was wrong</i>"]
+
+    subgraph H["THE HUMAN READER"]
+        direction TB
+        H1["a new joiner asks<br/><i>'why can't I just…?'</i>"]
+        H2["reads D-005 → understands the rule<br/>reads D-004 → understands the trap"]
+        H3["can now <b>argue with it on the merits</b><br/><i>instead of working around it</i>"]
+        H1 --> H2 --> H3
+    end
+
+    subgraph M["THE AI READER"]
+        direction TB
+        M1["@feature.specify assembles<br/>constraining decisions into the spec"]
+        M2["feature.md · criterion 4<br/><b>cites D-005</b>"]
+        M3["test <b>@015-us4</b> proves the refusal"]
+        M4["@feature.analyze flags any spec<br/>still citing superseded <b>D-004</b>"]
+        M1 --> M2 --> M3
+        M2 -.-> M4
+    end
+
+    D --> H1
+    D --> M1
+
+    style D fill:#e8f4ea,stroke:#2d6a4f,stroke-width:3px
+    style H fill:#e7eefc,stroke:#1d3f8f
+    style M fill:#fdf0e3,stroke:#9c5c1e
+```
+
+It works in two directions at once:
 
 - **A human reads it to understand the system.** The newcomer gets `D-005` instead of a shrug: what
   the decision was, what forced it, what it traded away, and what it now forbids. They can then
