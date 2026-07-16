@@ -101,7 +101,7 @@ The boring section that prevents the expensive bugs.
 
 | Concept | Type | Rule |
 |---|---|---|
-| **Money** | *(example)* integer, minor units (cents) | Never a float or decimal. See D-011. |
+| **Money** | *(example)* integer, minor units (cents) | Never a float or decimal. See D-001. |
 | **Timestamps** | ISO 8601, UTC | Never local time. |
 | | | |
 

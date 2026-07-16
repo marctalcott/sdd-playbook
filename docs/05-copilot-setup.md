@@ -113,7 +113,7 @@ This is the repo's law and it's worth an hour of the team's time. Be specific an
 principles generate vague code. Real examples:
 
 **API repo:**
-> Money is stored and transmitted as integer cents, never a decimal or float (D-011).
+> Money is stored and transmitted as integer cents, never a decimal or float (D-001).
 > Business values — thresholds, caps, fees, windows — are read from configuration by name.
 > Never inline a literal.
 > Every endpoint has a contract test before it has an implementation.
@@ -287,7 +287,7 @@ Backend for Acme. Event-sourced, .NET.
 
 ## Non-negotiable
 - Domain vocabulary comes from `../acme-docs/08-glossary.md`. Never invent a synonym.
-- Money is integer cents (D-011). Never decimal.
+- Money is integer cents (D-001). Never decimal.
 - Business values come from config by name. Never a literal.
 - The full rules are in `.specify/memory/constitution.md`. Read it before writing code.
 

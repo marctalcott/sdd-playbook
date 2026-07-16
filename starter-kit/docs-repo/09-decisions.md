@@ -22,7 +22,7 @@ way?" There are three possible answers:
 
 1. Nobody knows. *(You now have code nobody dares change.)*
 2. Someone remembers. *(Until they leave.)*
-3. **`D-011`.** *(You can read the reasoning and decide whether it still holds.)*
+3. **`D-001`.** *(You can read the reasoning and decide whether it still holds.)*
 
 This file is how you get the third one.
 

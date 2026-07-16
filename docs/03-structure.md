@@ -81,7 +81,7 @@ compounds. This is the most common way spec-driven development quietly fails, an
 only defence.
 
 **`09-decisions.md` — the decisions.** Numbered, dated, with rationale: *money is stored as integer
-cents* (D-011), *no SMS before M12* (D-015). Specs cite them. When a decision changes, you can find
+cents* (D-001), *business values live in config* (D-002). Specs cite them. When a decision changes, you can find
 every spec that assumed it.
 
 > **Why a separate repo?** Because it makes "the docs are the source of truth" true rather than
