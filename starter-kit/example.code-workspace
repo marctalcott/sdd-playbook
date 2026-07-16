@@ -1,0 +1,53 @@
+// ---------------------------------------------------------------------------
+// VS Code multi-root workspace.
+//
+// Copy to <workspace>/<product>.code-workspace, rename the folders, and open it
+// with File → Open Workspace from File…  — NOT the individual folders.
+//
+// WHY THIS FILE MATTERS: Copilot sees your workspace. If your workspace is one
+// repo, Copilot cannot see the other repo — so it cannot reconcile a contract,
+// project a spec into two repos, or run a test in one repo against a service in
+// another. Every cross-repo thing the playbook does depends on this file.
+// ---------------------------------------------------------------------------
+{
+  "folders": [
+    { "name": "docs", "path": "product-docs" },
+    { "name": "api",  "path": "product-api"  },
+    { "name": "ui",   "path": "product-ui"   }
+  ],
+
+  "settings": {
+    // Make the feature.* agents visible from any folder in the workspace.
+    // Without this, agent discovery in a multi-root workspace is inconsistent —
+    // it is the newest part of this stack and the most likely to differ across
+    // VS Code versions. If the agents dropdown is missing entries, this is your
+    // lever.
+    "chat.agentFilesLocations": {
+      "product-docs/.github/agents": true
+    },
+
+    // Keep generated Spec Kit artifacts out of search noise when you're reading
+    // code — comment out if you'd rather search them.
+    "search.exclude": {
+      "**/.specify/scripts": true
+    },
+
+    "files.associations": {
+      "*.agent.md": "markdown",
+      "*.prompt.md": "markdown",
+      "*.instructions.md": "markdown"
+    }
+  },
+
+  // ---------------------------------------------------------------------------
+  // SANITY CHECK once you've opened this:
+  //
+  //  1. All three folders appear in the Explorer.
+  //  2. Ask Copilot Chat something that needs TWO repos at once, e.g.
+  //     "list the endpoint paths defined in product-api/src and every path
+  //      product-ui calls"
+  //     If it can only see one, your agents will silently do half a job.
+  //     Fix this BEFORE building anything on top of it.
+  //  3. The agents dropdown in the Chat view lists your feature.* agents.
+  // ---------------------------------------------------------------------------
+}

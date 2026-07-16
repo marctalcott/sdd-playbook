@@ -1,0 +1,201 @@
+# --------------------------------------------------------------------------
+# FEATURE MANIFEST  —  the single source of truth for a cross-repo feature.
+#
+# Polyrepo has no single commit that means "this feature is done." This file
+# is that missing artifact: it names the repos that participate, the branch in
+# each, the story-ordered task slices that interleave the repos' work, and the
+# per-story done-gate that must be green before signoff.
+#
+# Copy this folder to  <product>-docs/features/NNN-slug/  and fill it in.
+# NNN is shared across every repo by convention (same number, -api / -ui spec
+# folders). The `feature.*` agents read and MUTATE specific fields of this file
+# — the stage that OWNS each field is noted in [brackets].
+#
+# YAML TRAP: always QUOTE ISO timestamps inside { } flow-maps. The colons in
+# "10:00:00" break the parse otherwise.
+# --------------------------------------------------------------------------
+
+feature: NNN-slug                 # e.g. 015-watch-list                  [specify]
+title: Human-readable feature name                                     # [specify]
+catalog_ref: F-DOMAIN-NNN         # the row in 07-feature-catalog.md     [specify]
+source: <product>-docs@<sha>      # docs SHA this was specified from     [specify]
+
+# draft → spec-signed-off → in-progress → signed-off → uat → shipped
+#
+# A feature reaches `signed-off` only when EVERY in-scope story's done_gate is
+# signed-off. It reaches `shipped` only when every in-scope repo's work is
+# merged AND deployed.
+status: draft                                          # [specify/spec-signoff/signoff/uat/ship]
+
+# The cross-repo spec lives next to this file as feature.md. Per-repo plans and
+# tasks are generated INTO each repo and indexed here, so the manifest stays the
+# one place that knows the whole.
+spec: feature.md                                                       # [specify]
+
+# --------------------------------------------------------------------------
+# GATE 1 — the customer signed the WHAT, before any code was written.
+# `feature.plan` MUST refuse to run until this is filled by a real person.
+# This is the highest-value gate in the pipeline. Do not fake it.
+# --------------------------------------------------------------------------
+spec_signoff:                                                   # [spec-signoff]
+  by: null            # a real person's name + org. Never "the team", never an AI.
+  at: null            # "2026-07-02T14:30:00Z"  ← quote it
+  note: null          # what they accepted, INCLUDING what they accepted as out of scope
+  scope_reviewed: null  # true only if the out-of-scope list was explicitly walked through
+
+# --------------------------------------------------------------------------
+# Participating repos. Paths are relative to <workspace> — the folder where the
+# code repos and the docs repo are siblings. Add/remove repos per feature; not
+# every feature touches every repo.
+#
+# `state` is the DISPATCHER. Every later stage reads it to decide what to do:
+#   new         fresh branch, nothing written yet         → plan it
+#   specified   spec.md exists; no plan/tasks             → plan it
+#   planned     spec + plan (+ tasks) exist; no code yet  → reconcile, DON'T regenerate
+#   in-progress branch open, implementation partial       → reconcile, DON'T regenerate
+#   merged      shipped and on the default branch         → FROZEN. Read-only authority.
+#                                                           Other repos conform to it.
+# When state: merged, `branch` is the default branch, not a feature branch.
+# --------------------------------------------------------------------------
+repos:                                                   # [specify/adopt/plan]
+  api:
+    path: <product>-api
+    spec: .specify/specs/NNN-slug-api      # the per-repo Spec Kit spec folder
+    constitution: .specify/memory/constitution.md
+    branch: feat/NNN-slug-api
+    state: new                             # new|specified|planned|in-progress|merged
+    pr: null                               # filled when the PR opens          [verify]
+  ui:
+    # NOTE: if your app lives in a subfolder, the Spec Kit root is prefixed
+    # (e.g. App/.specify/...) but BRANCHES ARE STILL CUT AT THE GIT-REPO ROOT.
+    # Those are different paths. Write the real ones here; this file is the authority.
+    path: <product>-ui
+    spec: .specify/specs/NNN-slug-ui
+    constitution: .specify/memory/constitution.md
+    branch: feat/NNN-slug-ui
+    state: new
+    pr: null
+
+# --------------------------------------------------------------------------
+# Phases → Stories. A large feature is grouped into PHASES; each phase holds one
+# or more STORIES. The STORY is the unit of vertical delivery: it is carried end
+# to end (api → ui → gate green → signoff) BEFORE the next story starts. The
+# per-story gate is what guarantees an always-shippable increment — US1 ships
+# before US2 is even implemented.
+#
+# A phase is signed-off only when every in-scope story in it is; the feature is
+# signed-off only when every phase is. Excluded stories never block the cascade
+# and never count toward it.
+#
+# `slices` interleave the per-repo task ranges IN EXECUTION ORDER. The api slice
+# is ordered before the ui slice — the UI consumes the API. Task ranges refer to
+# the task IDs inside each repo's own tasks.md, verbatim. Never renumber them.
+# --------------------------------------------------------------------------
+phases:                                                              # [tasks]
+  - id: P1
+    title: Short phase name
+    status: pending                        # pending → in-progress → signed-off
+    setup: T001-T004                       # shared/foundational tasks, recorded ONCE
+    stories:
+      - id: US1
+        title: As a {persona}, I {capability} so that {outcome}
+        priority: P1                       # P1 = first shippable slice in the phase
+        slices:                            # THE WORK ORDER. api before ui.
+          - { repo: api, tasks: T005-T012 }
+          - { repo: ui,  tasks: T001-T006 }
+        done_gate:
+          # pending → green [verify, off a real run] → signed-off [signoff, a human]
+          status: pending
+          e2e: <product>-ui/e2e/NNN-slug-us1.spec.ts
+          e2e_tag: "@NNN-us1"              # the test selector. The thread from
+                                           # acceptance criterion to executable test.
+          last_run: null                   # ISO timestamp of the last real run  [verify]
+        signoff:                                                    # [signoff]
+          by: null                         # a real person. Never fabricate this.
+          at: null
+          note: null
+
+      - id: US2
+        title: ...
+        priority: P2
+        slices:
+          - { repo: api, tasks: T013-T018 }
+          - { repo: ui,  tasks: T007-T012 }
+        done_gate:
+          status: pending
+          e2e: <product>-ui/e2e/NNN-slug-us2.spec.ts
+          e2e_tag: "@NNN-us2"
+          last_run: null
+        signoff: { by: null, at: null, note: null }
+
+# --------------------------------------------------------------------------
+# EXCLUDED — stories that exist in the spec but are NOT being built now.
+# Recorded explicitly so their tasks are never quietly absorbed into an in-scope
+# slice. Excluded payload leaking into an in-scope slice is the signature
+# failure of this layer — `feature.analyze` checks for it every run.
+# --------------------------------------------------------------------------
+excluded:                                                   # [specify/adopt]
+  # - { id: US5, tasks: T040-T052, reason: "out of scope per customer signoff 2026-07-02" }
+
+# --------------------------------------------------------------------------
+# COMPOSE — the reproducible "stand up the WHOLE system and test it" recipe.
+# The done-gate executes exactly this. This exists because a read-side feature
+# is INVISIBLE to an end-to-end test unless its background workers are running.
+# A green obtained with a worker down is a FALSE PASS — the worst outcome the
+# verify stage can produce.
+#
+# List EVERY service. If one genuinely isn't needed, remove it here,
+# deliberately, where the whole team can see the decision.
+# --------------------------------------------------------------------------
+compose:                                                              # [plan]
+  api:
+    cwd: <product>-api
+    cmd: "<command that runs the API>"
+    health: "http://localhost:PORT/health"    # POLL until 200 before any assertion
+  workers:                                    # background services — no port to poll
+    - name: projections
+      cwd: <product>-api
+      cmd: "<command that runs the projection worker>"
+    # - name: event-listeners
+    #   cwd: <product>-api
+    #   cmd: "<command>"
+  ui:
+    cwd: <product>-ui
+    cmd: "<command that runs the UI>"
+    url: "http://localhost:3000"
+  e2e:
+    cwd: <product>-ui
+    cmd: "<e2e command> --grep '@NNN'"    # all stories; verify narrows to one story's tag
+
+# --------------------------------------------------------------------------
+# GATE 4 — real customers used the real thing, in a real environment.
+# Findings sort into EXACTLY TWO buckets:
+#   bugs      → back to feature.implement on THIS feature; fix the test too
+#   requests  → NEW rows in 07-feature-catalog.md. Never absorbed into this feature.
+# --------------------------------------------------------------------------
+uat:                                                                   # [uat]
+  env: null             # e.g. "test" — where the increment was deployed
+  deployed_at: null
+  participants: []      # real people who used it, by name
+  status: pending       # pending → in-progress → passed | bugs-found
+  findings:
+    bugs: []            # - { id: B1, story: US1, desc: "...", fixed_at: null, test_gap: "..." }
+    requests: []        # - { desc: "...", catalog_row: F-LST-021 }  ← must get a row
+
+# --------------------------------------------------------------------------
+# SHIP — merged and deployed. api before ui, always: the UI consumes the API,
+# and the reverse order leaves a window where the frontend calls an endpoint
+# that does not exist yet.
+# --------------------------------------------------------------------------
+ship:                                                                 # [ship]
+  merged: []            # - { repo: api, pr: 42, at: "2026-07-10T09:00:00Z" }
+  deployed_at: null
+  deployed_by: null
+
+# --------------------------------------------------------------------------
+# Append-only log of stage actions, newest last. Each `feature.*` agent appends
+# ONE line. Gives a human a readable history without diffing the whole file.
+# Six months from now this is how you find out what happened.
+# --------------------------------------------------------------------------
+log:                                                                   # [all]
+  - { at: "<iso>", phase: specify, by: feature.specify, note: "manifest scaffolded" }
