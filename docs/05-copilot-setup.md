@@ -138,19 +138,23 @@ the other repo — which means it cannot reconcile a contract, cannot project a 
 cannot run a test in one repo against a service in another. Every cross-repo thing this playbook does
 would be impossible.
 
-**The fix is a multi-root workspace.** Create `~/src/athenaeum/athenaeum.code-workspace`:
+**The fix is a multi-root workspace.** Create `~/src/athenaeum/athenaeum-docs/athenaeum.code-workspace`
+— **inside the docs repo, not loose at the top of `~/src/athenaeum/`.** That top folder is a plain
+container with no `.git` of its own, so a file dropped directly into it is never committed or shared;
+putting the workspace file in `athenaeum-docs/` instead means it's git-tracked and arrives
+automatically for anyone who clones that repo:
 
 ```jsonc
 {
   "folders": [
-    { "name": "docs", "path": "athenaeum-docs" },
-    { "name": "api",  "path": "athenaeum-api"  },
-    { "name": "ui",   "path": "athenaeum-ui"   }
+    { "name": "docs", "path": "." },
+    { "name": "api",  "path": "../athenaeum-api" },
+    { "name": "ui",   "path": "../athenaeum-ui"  }
   ],
   "settings": {
     // Make the feature.* agents visible regardless of which folder is focused.
     "chat.agentFilesLocations": {
-      "athenaeum-docs/.github/agents": true
+      ".github/agents": true
     }
   }
 }
@@ -159,6 +163,11 @@ would be impossible.
 Open **that file**, not the individual folders (`File → Open Workspace from File…`). Now Copilot can
 see all three repos at once, and `@feature.plan` can genuinely compare the API's contract against the
 UI's.
+
+> **The container folder still deserves a `README.md` and a generic `AGENTS.md`** for anyone who
+> opens it directly instead of the workspace file — see
+> [03 — Structure](03-structure.md#the-container-folder-isnt-entirely-bare-though) for what goes in
+> them and why they're a hand-synced local copy rather than the source of truth.
 
 > **Sanity-check this.** In a multi-root workspace, ask Copilot Chat something that requires two repos
 > — *"list the endpoint paths in athenaeum-api/src and every path athenaeum-ui calls"*. If it can only see one,
@@ -327,16 +336,23 @@ Start with:
 4. **`decisions.md`** — start empty. Add `D-001` the first time you decide something.
 5. **`feature-catalog.md`** — your first feature row.
 6. **`features/_template/manifest.yaml`** — copy it as-is.
+7. **`AGENTS.md`** and the container folder's `README.md` — copy both from
+   [`starter-kit/workspace-root/`](../starter-kit/workspace-root/), fill in `<product>`, and put
+   the canonical copies here in `athenaeum-docs/`. See
+   [03 — Structure](03-structure.md#the-container-folder-isnt-entirely-bare-though) for why they
+   also get a hand-synced local copy at the top of `~/src/athenaeum/`.
 
 ---
 
 ## The finished layout
 
 ```
-~/src/athenaeum/
-├── athenaeum.code-workspace              ← open THIS
+~/src/athenaeum/                          ← plain container, no .git of its own
+├── README.md, AGENTS.md                  ← local copy; canonical version is below
 │
 ├── athenaeum-docs/
+│   ├── athenaeum.code-workspace      ← open THIS
+│   ├── AGENTS.md                     ← canonical operating model, git-tracked
 │   ├── .github/agents/              ← the 11 feature.* agents
 │   ├── vision.md … walkthroughs.md
 │   └── features/
@@ -361,7 +377,7 @@ Start with:
 
 Run through this before you trust it with a real feature:
 
-- [ ] Opening `athenaeum.code-workspace` shows all three folders in the Explorer.
+- [ ] Opening `athenaeum-docs/athenaeum.code-workspace` shows all three folders in the Explorer.
 - [ ] Copilot Chat can answer a question that requires two repos at once.
 - [ ] `/speckit.` autocompletes in Chat when a code repo file is focused.
 - [ ] The agents dropdown lists your `feature.*` agents.
