@@ -1,19 +1,25 @@
 // ---------------------------------------------------------------------------
 // VS Code multi-root workspace.
 //
-// Copy to <workspace>/<product>.code-workspace, rename the folders, and open it
-// with File → Open Workspace from File…  — NOT the individual folders.
+// Copy to <product>-docs/<product>.code-workspace, rename the folders, and open
+// it with File → Open Workspace from File…  — NOT the individual folders.
 //
-// WHY THIS FILE MATTERS: Copilot sees your workspace. If your workspace is one
-// repo, Copilot cannot see the other repo — so it cannot reconcile a contract,
-// project a spec into two repos, or run a test in one repo against a service in
-// another. Every cross-repo thing the playbook does depends on this file.
+// WHY IT LIVES IN THE DOCS REPO, NOT AT THE TOP OF <workspace>/: that top folder
+// is a plain container, not a repo — nothing placed directly in it is ever
+// committed anywhere. Putting the workspace file inside product-docs instead
+// means it's git-tracked, versioned, and arrives automatically for anyone who
+// clones that repo, instead of being a file each person recreates by hand.
+//
+// WHY THE FILE ITSELF MATTERS: Copilot sees your workspace. If your workspace is
+// one repo, Copilot cannot see the other repo — so it cannot reconcile a
+// contract, project a spec into two repos, or run a test in one repo against a
+// service in another. Every cross-repo thing the playbook does depends on it.
 // ---------------------------------------------------------------------------
 {
   "folders": [
-    { "name": "docs", "path": "product-docs" },
-    { "name": "api",  "path": "product-api"  },
-    { "name": "ui",   "path": "product-ui"   }
+    { "name": "docs", "path": "." },
+    { "name": "api",  "path": "../product-api" },
+    { "name": "ui",   "path": "../product-ui"  }
   ],
 
   "settings": {
@@ -23,7 +29,7 @@
     // VS Code versions. If the agents dropdown is missing entries, this is your
     // lever.
     "chat.agentFilesLocations": {
-      "product-docs/.github/agents": true
+      ".github/agents": true
     },
 
     // Keep generated Spec Kit artifacts out of search noise when you're reading

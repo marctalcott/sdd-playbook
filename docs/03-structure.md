@@ -7,14 +7,15 @@
 
 ## The workspace on disk
 
-Three repos, siblings, flat. Plus one file at the top that is easy to overlook and load-bearing:
+Three repos, siblings, flat, inside a bare container folder that is not itself a repo. Plus one
+file that's easy to overlook and load-bearing — and it lives *inside* the docs repo, not loose in
+the container, so it's git-tracked instead of something each person recreates by hand:
 
 ```mermaid
 flowchart TB
-    CW["<b>athenaeum.code-workspace</b><br/><i>open THIS in VS Code —<br/>not the individual folders</i>"]
-
     subgraph DOCS["athenaeum-docs &nbsp;&nbsp;·&nbsp;&nbsp; NO APPLICATION CODE, EVER"]
         direction TB
+        CW["<b>athenaeum.code-workspace</b><br/><i>open THIS in VS Code —<br/>not the individual folders</i>"]
         DA["<b>glossary.md</b> · <b>decisions.md</b><br/><b>feature-catalog.md</b><br/>vision · personas · principles · walkthroughs"]
         DB[".github/agents/<br/>the 11 feature.* agents"]
         DC["features/015-hold-queue/<br/>feature.md + manifest.yaml"]
@@ -34,8 +35,7 @@ flowchart TB
         UC["src/ &nbsp;·&nbsp; e2e/ ← the gate tests"]
     end
 
-    CW -.->|"makes Copilot see<br/>all three at once"| DOCS
-    CW -.-> API
+    CW -.->|"makes Copilot see<br/>all three at once"| API
     CW -.-> UI
 
     DB ==>|"agents reach DOWN<br/>into the code repos"| API
@@ -46,6 +46,32 @@ flowchart TB
 repo and it cannot see the others — so it cannot reconcile a contract, project a spec into two repos,
 or run a test in one repo against a service in another. Every cross-repo thing in this playbook
 depends on that one file. See [05 — Setup](05-copilot-setup.md#step-5--the-multi-root-workspace-this-is-the-important-one).
+
+**Why it lives in the docs repo, not loose at the top of `<workspace>/`.** The container folder
+holding the three siblings has no `.git` of its own — it's Finder/Explorer convenience only, not a
+project. Anything dropped directly into it is never committed or shared with a teammate who clones
+fresh. Putting the workspace file inside `athenaeum-docs/` instead means it ships with that repo:
+git-tracked, versioned, and there the moment someone clones it — rather than a file everyone has to
+recreate by hand on their own machine.
+
+### The container folder isn't entirely bare, though
+
+Even though it holds no git repo of its own, it's worth giving that top folder a `README.md` and a
+generic `AGENTS.md` — a short operating model for whoever opens it directly instead of the
+`.code-workspace` file. On Athenaeum this covers three things: that the folder is a plain
+container (so nobody wonders why `git status` doesn't work there), that whoever's working in it
+should act as **Tech Lead** — read the docs repo first, never hand-edit `athenaeum-api/` or
+`athenaeum-ui/` directly, delegate to sub-agents instead — and a pointer back to the docs repo as
+the source of truth.
+
+Treat these top-level files as a **local copy**, not the source of truth — since the container
+isn't a repo, they can't be committed there. Keep the canonical version inside
+`athenaeum-docs/AGENTS.md` (git-tracked, so a teammate gets it for free on clone) and copy it up
+into the container by hand when it changes. If two hand-synced copies feels like one indirection
+too many, the simpler alternative is to skip the container copy entirely and just tell people to
+open `athenaeum-docs/AGENTS.md` directly — you lose having instructions visible the instant someone
+opens the bare folder, and that's the whole tradeoff. A starter template for both files is in
+[`starter-kit/workspace-root/`](../starter-kit/workspace-root/).
 
 ---
 
@@ -433,10 +459,13 @@ test that gates production in stage 7.
 ## The whole thing on disk
 
 ```
-<workspace>/                          ← the folder that holds everything
-├── <product>.code-workspace          ← VS Code multi-root file. See doc 05.
+<workspace>/                          ← the folder that holds everything. NOT a git repo.
+├── README.md                         ← local copy, untracked. See starter-kit/workspace-root/.
+├── AGENTS.md                         ← local copy, untracked. Canonical version lives below.
 │
 ├── <product>-docs/
+│   ├── <product>.code-workspace      ← VS Code multi-root file. Lives HERE. See doc 05.
+│   ├── AGENTS.md                     ← the canonical operating model, git-tracked
 │   ├── vision.md … walkthroughs.md
 │   ├── .github/agents/               ← the feature.* Copilot agents live here
 │   └── features/

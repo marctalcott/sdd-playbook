@@ -12,19 +12,28 @@ process until you know what the ten stages are.
 
 | Folder | Copy into | Contains |
 |---|---|---|
-| **`docs-repo/`** | `<product>-docs/` | The 11 agents, the manifest template, the three docs that do the daily work |
+| **`docs-repo/`** | `<product>-docs/` | The 11 agents, the manifest template, the three docs that do the daily work, and the multi-root workspace file |
 | **`code-repo/`** | **each** code repo | The Copilot instructions template |
-| **`example.code-workspace`** | `<workspace>/<product>.code-workspace` | The multi-root workspace — **the file that lets Copilot see across repos** |
+| **`workspace-root/`** | `<workspace>/` (the bare container folder) | A local, untracked `README.md` + `AGENTS.md` — the operating model for whoever opens that folder directly instead of the workspace file |
 
 ```bash
 # from <workspace>/, with athenaeum-docs, athenaeum-api, athenaeum-ui as siblings
 cp -r sdd-playbook/starter-kit/docs-repo/.       athenaeum-docs/
 cp -r sdd-playbook/starter-kit/code-repo/.       athenaeum-api/
 cp -r sdd-playbook/starter-kit/code-repo/.       athenaeum-ui/
-cp    sdd-playbook/starter-kit/example.code-workspace  athenaeum.code-workspace
+cp -r sdd-playbook/starter-kit/workspace-root/.  .
 ```
 
-Then find-and-replace `<product>` → `athenaeum` and open `athenaeum.code-workspace`.
+Then find-and-replace `<product>` → `athenaeum` everywhere (including inside `athenaeum-docs/`,
+where `example.code-workspace` should be renamed `athenaeum.code-workspace`) and open
+`athenaeum-docs/athenaeum.code-workspace`.
+
+**The workspace file lives inside the docs repo, not at the top of `<workspace>/`.** That top
+folder is a plain container — it has no `.git` of its own, so anything dropped directly into it
+(including the `workspace-root/` copy above) is never committed or shared. Putting the workspace
+file in `athenaeum-docs/` instead means it's versioned and arrives automatically for anyone who
+clones that repo. See [03 — Structure](../docs/03-structure.md#the-workspace-on-disk) for the
+diagram.
 
 **Spec Kit is NOT in this kit** — install it per code repo with
 `specify init . --integration copilot`. See [05 — Setup](../docs/05-copilot-setup.md).
