@@ -167,7 +167,7 @@ UI's.
 > **The container folder still deserves a `README.md` and a generic `AGENTS.md`** for anyone who
 > opens it directly instead of the workspace file — see
 > [03 — Structure](03-structure.md#the-container-folder-isnt-entirely-bare-though) for what goes in
-> them and why they're a hand-synced local copy rather than the source of truth.
+> them. `AGENTS.md` there is a symlink back to `athenaeum-docs/AGENTS.md`, not a second copy.
 
 > **Sanity-check this.** In a multi-root workspace, ask Copilot Chat something that requires two repos
 > — *"list the endpoint paths in athenaeum-api/src and every path athenaeum-ui calls"*. If it can only see one,
@@ -336,11 +336,14 @@ Start with:
 4. **`decisions.md`** — start empty. Add `D-001` the first time you decide something.
 5. **`feature-catalog.md`** — your first feature row.
 6. **`features/_template/manifest.yaml`** — copy it as-is.
-7. **`AGENTS.md`** and the container folder's `README.md` — copy both from
-   [`starter-kit/workspace-root/`](../starter-kit/workspace-root/), fill in `<product>`, and put
-   the canonical copies here in `athenaeum-docs/`. See
-   [03 — Structure](03-structure.md#the-container-folder-isnt-entirely-bare-though) for why they
-   also get a hand-synced local copy at the top of `~/src/athenaeum/`.
+7. **`AGENTS.md`** — copy it from [`starter-kit/docs-repo/AGENTS.md`](../starter-kit/docs-repo/AGENTS.md)
+   and fill in `<product>`. This is the one real copy. Then, from `~/src/athenaeum/`, copy
+   `starter-kit/workspace-root/README.md` to the container root and symlink `AGENTS.md` into it:
+   ```bash
+   cp sdd-playbook/starter-kit/workspace-root/README.md .
+   ln -s athenaeum-docs/AGENTS.md AGENTS.md
+   ```
+   See [03 — Structure](03-structure.md#the-container-folder-isnt-entirely-bare-though) for why.
 
 ---
 
@@ -348,11 +351,12 @@ Start with:
 
 ```
 ~/src/athenaeum/                          ← plain container, no .git of its own
-├── README.md, AGENTS.md                  ← local copy; canonical version is below
+├── README.md                             ← local, untracked
+├── AGENTS.md@ -> athenaeum-docs/AGENTS.md ← symlink, not a copy
 │
 ├── athenaeum-docs/
 │   ├── athenaeum.code-workspace      ← open THIS
-│   ├── AGENTS.md                     ← canonical operating model, git-tracked
+│   ├── AGENTS.md                     ← the one real copy, git-tracked
 │   ├── .github/agents/              ← the 11 feature.* agents
 │   ├── vision.md … walkthroughs.md
 │   └── features/

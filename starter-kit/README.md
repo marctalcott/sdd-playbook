@@ -12,9 +12,9 @@ process until you know what the ten stages are.
 
 | Folder | Copy into | Contains |
 |---|---|---|
-| **`docs-repo/`** | `<product>-docs/` | The 11 agents, the manifest template, the three docs that do the daily work, and the multi-root workspace file |
+| **`docs-repo/`** | `<product>-docs/` | The 11 agents, the manifest template, the three docs that do the daily work, the multi-root workspace file, and the canonical `AGENTS.md` |
 | **`code-repo/`** | **each** code repo | The Copilot instructions template |
-| **`workspace-root/`** | `<workspace>/` (the bare container folder) | A local, untracked `README.md` + `AGENTS.md` — the operating model for whoever opens that folder directly instead of the workspace file |
+| **`workspace-root/`** | `<workspace>/` (the bare container folder) | Just a local, untracked `README.md` — orientation for whoever opens that folder directly instead of the workspace file |
 
 ```bash
 # from <workspace>/, with athenaeum-docs, athenaeum-api, athenaeum-ui as siblings
@@ -22,11 +22,18 @@ cp -r sdd-playbook/starter-kit/docs-repo/.       athenaeum-docs/
 cp -r sdd-playbook/starter-kit/code-repo/.       athenaeum-api/
 cp -r sdd-playbook/starter-kit/code-repo/.       athenaeum-ui/
 cp -r sdd-playbook/starter-kit/workspace-root/.  .
+ln -s athenaeum-docs/AGENTS.md AGENTS.md
 ```
 
 Then find-and-replace `<product>` → `athenaeum` everywhere (including inside `athenaeum-docs/`,
 where `example.code-workspace` should be renamed `athenaeum.code-workspace`) and open
 `athenaeum-docs/athenaeum.code-workspace`.
+
+**`AGENTS.md` is a symlink, not a copy.** The container folder has no `.git` of its own, so its
+`README.md` above is just a local file nobody tracks — fine, since it barely ever changes. But
+`AGENTS.md` carries the actual operating model, which does change, so it gets one real,
+git-tracked copy in `athenaeum-docs/` and a symlink at the container root pointing to it. Edit it
+in one place; both locations always show the current version.
 
 **The workspace file lives inside the docs repo, not at the top of `<workspace>/`.** That top
 folder is a plain container — it has no `.git` of its own, so anything dropped directly into it

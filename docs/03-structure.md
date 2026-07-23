@@ -64,14 +64,20 @@ should act as **Tech Lead** — read the docs repo first, never hand-edit `athen
 `athenaeum-ui/` directly, delegate to sub-agents instead — and a pointer back to the docs repo as
 the source of truth.
 
-Treat these top-level files as a **local copy**, not the source of truth — since the container
-isn't a repo, they can't be committed there. Keep the canonical version inside
-`athenaeum-docs/AGENTS.md` (git-tracked, so a teammate gets it for free on clone) and copy it up
-into the container by hand when it changes. If two hand-synced copies feels like one indirection
-too many, the simpler alternative is to skip the container copy entirely and just tell people to
-open `athenaeum-docs/AGENTS.md` directly — you lose having instructions visible the instant someone
-opens the bare folder, and that's the whole tradeoff. A starter template for both files is in
-[`starter-kit/workspace-root/`](../starter-kit/workspace-root/).
+`README.md` can just be a local, untracked file at the container root — it barely changes, so
+nothing is lost by it not being versioned. `AGENTS.md` is different: it's the operating model, and
+it *does* change, so don't give it a second copy of the text to drift out of sync. Instead, keep the
+one real, git-tracked file at `athenaeum-docs/AGENTS.md` and **symlink** it into the container root:
+
+```bash
+ln -s athenaeum-docs/AGENTS.md AGENTS.md
+```
+
+Now an assistant opening the bare container folder sees `AGENTS.md` immediately, same as if it were
+a real file there — but there's only ever one copy to edit, in the docs repo, and the symlink always
+resolves to the current version. Starter templates for both files are in
+[`starter-kit/`](../starter-kit/README.md#what-goes-where): `AGENTS.md` in `docs-repo/`, `README.md`
+in `workspace-root/`.
 
 ---
 
@@ -460,8 +466,8 @@ test that gates production in stage 7.
 
 ```
 <workspace>/                          ← the folder that holds everything. NOT a git repo.
-├── README.md                         ← local copy, untracked. See starter-kit/workspace-root/.
-├── AGENTS.md                         ← local copy, untracked. Canonical version lives below.
+├── README.md                         ← local, untracked. See starter-kit/workspace-root/.
+├── AGENTS.md@ -> athenaeum-docs/AGENTS.md   ← symlink, not a copy — one real file, below
 │
 ├── <product>-docs/
 │   ├── <product>.code-workspace      ← VS Code multi-root file. Lives HERE. See doc 05.
