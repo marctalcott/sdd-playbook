@@ -5,7 +5,7 @@
 
 ---
 
-## The five that will actually get you
+## The six that will actually get you
 
 Skip the rest if you must. Not these.
 
@@ -69,6 +69,37 @@ horizontal slicing while believing you're doing vertical slicing — which is wo
 honestly, because you've lost the ability to tell the difference.
 
 **The rule:** *one story, end to end, then stop.* Take the twenty minutes back next story.
+
+### Chasing the thing you found
+
+You set out to fix one defect. On the way you notice a retired config key still required in
+production, a glossary entry describing behaviour the system stopped having months ago, and a
+decision whose central term was never defined. Each is small. You are already in the file. Each is
+*obviously* wrong. You fix all three, and each fix surfaces the next one.
+
+**What just happened:** the day is gone. Every commit was defensible on its own and the codebase is
+genuinely tidier — but nothing shipped, and the feature you started the morning on has not moved.
+The tell is in the sequence: every "what's next" was downstream of the previous commit rather than
+measured against the board. That feels like momentum. It is a thread being pulled.
+
+This one is harder to catch than the others because there is no bad commit to point at. Each step
+passes review. The failure is only visible at the level of the day.
+
+**The rule:** *found work is logged, not done.* **The lead stays on the current feature** unless the
+thing you found either blocks it, or is an urgent bug — actively losing money, leaking data, or
+misleading a user *right now*. Everything else becomes an issue in the owning repo or a row in the
+catalog, and a human decides when it is worth doing.
+
+*"It's small"*, *"I'm already in the file"*, and *"it's obviously wrong"* are not reasons. They are
+the three sentences that turn a session into a chain of consequences.
+
+Two habits that make the rule stick:
+
+- **Propose the next piece of work against the board, not against the thing you just finished.** The
+  honest form is *"X is what I just found; Y is what's on the backlog; here's which I'd do and why."*
+- **At the end of a session, ask what a user can do that they could not that morning.** "Nothing, but
+  the codebase is tidier" is sometimes the right answer — but it should be a call someone made out
+  loud, not the residue of following consequences.
 
 ### Hand-editing a generated spec
 
@@ -190,6 +221,7 @@ Print this.
 > **The whole system, or it's a lie.** Every service, every worker.
 > **Green is a fact; signed-off is a judgement.** Never collapse them.
 > **One story, end to end, then stop.**
+> **Found work is logged, not done.** Stay on the feature; urgent bugs only.
 > **The merged contract wins.** Always.
 > **Never lose a task.** Slices + setup + excluded = total.
 > **Excluded stays excluded.**
