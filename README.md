@@ -2,9 +2,12 @@
 
 How a Product Manager, a Tech Lead, a Developer, a QA engineer, and a real customer take one
 feature from "someone asked for this" to "it's in production" — using written specifications as
-the thing that carries meaning between them, and GitHub Copilot as the thing that does the typing.
+the thing that carries meaning between them, and an AI coding assistant as the thing that does the
+typing.
 
-You need two tools: **VS Code** and **GitHub Copilot**. That's it.
+You need an editor and one assistant. **VS Code + GitHub Copilot**, or **Claude Code**. The
+pipeline is the same either way: each stage has **one definition and two front-ends**, so the rules
+live in one file and both runners read it.
 
 ---
 
@@ -25,12 +28,13 @@ Read it in order. It is about 45 minutes end to end.
 | [03 — Structure](docs/03-structure.md) | The docs repo, the decisions log, the code repos, and the manifest that ties them together |
 | [04 — Roles](docs/04-roles.md) | A runbook per role: what you do, what you type, what "done" means for you |
 | [05 — VS Code + Copilot setup](docs/05-copilot-setup.md) | How to actually build this with only VS Code and Copilot |
-| [06 — Rollout](docs/06-rollout.md) | What a team that has never done this does in its first two weeks |
-| [07 — Pitfalls](docs/07-pitfalls.md) | The failure modes, each with the rule that prevents it |
+| [06 — Claude Code setup](docs/06-claude-code-setup.md) | The same pipeline from Claude Code — the skills front-end, and why it holds no rules of its own |
+| [07 — Rollout](docs/07-rollout.md) | What a team that has never done this does in its first two weeks |
+| [08 — Pitfalls](docs/08-pitfalls.md) | The failure modes, each with the rule that prevents it |
 
-The [`starter-kit/`](starter-kit/) folder is a copy-paste implementation: the Copilot agent
-definitions, the manifest template, and the docs skeleton. Clone it and you can run the pipeline
-on day one.
+The [`starter-kit/`](starter-kit/) folder is a copy-paste implementation: the eleven stage
+definitions, both front-ends, the manifest template, and the docs skeleton. Clone it and you can
+run the pipeline on day one.
 
 ---
 

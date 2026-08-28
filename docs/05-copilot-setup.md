@@ -2,6 +2,11 @@
 
 > **Read this if** you're the person actually building this. Everything here uses only VS Code and
 > GitHub Copilot. No other tooling, no subscriptions beyond Copilot.
+>
+> **Using Claude Code instead?** Steps 1–4 and 7–8 are the same either way — Spec Kit, the
+> constitutions, the instruction files, and seeding the docs repo are front-end agnostic. Read
+> those here, then take the front-end from [06 — Claude Code setup](06-claude-code-setup.md).
+> The stage definitions in step 6 are the same files for both runners.
 
 ---
 
@@ -195,7 +200,9 @@ athenaeum-docs/.github/agents/
 ├── feature.signoff.agent.md
 ├── feature.uat.agent.md
 ├── feature.ship.agent.md
-└── feature.adopt.agent.md
+├── feature.adopt.agent.md
+│
+└── repo-*.agent.md                  ← the six sub-agents they dispatch. See below.
 ```
 
 They live in the **docs repo** because the docs repo is the coordination layer — that's where
@@ -207,10 +214,27 @@ VS Code discovers `.agent.md` files in `.github/agents/` and also in `.claude/ag
 **Copy them from [`starter-kit/docs-repo/.github/agents/`](../starter-kit/docs-repo/.github/agents/)
 — they're written and ready.**
 
-Each orchestrator dispatches **sub-agents** (`repo-planner`, `repo-implementer`, …) down into the
-code repos. Those are project-specific, so you define them yourself — see the
-[starter kit README](../starter-kit/README.md#how-the-agents-are-wired). Give each
-`user-invocable: false` so they stay out of the dropdown.
+Each orchestrator dispatches **sub-agents** down into the code repos, and all six ship beside the
+stages:
+
+```
+athenaeum-docs/.github/agents/
+├── feature.*.agent.md               ← the 11 stages, above
+├── repo-scaffolder.agent.md         ← dispatched by feature.specify
+├── repo-detector.agent.md           ← by feature.adopt      (read-only)
+├── repo-planner.agent.md            ← by feature.plan
+├── repo-tasker.agent.md             ← by feature.tasks
+├── repo-implementer.agent.md        ← by feature.implement  (the only one that writes src/)
+└── repo-auditor.agent.md            ← by feature.analyze    (read-only)
+```
+
+Each carries `user-invocable: false` so it stays out of the dropdown — these are pipeline
+machinery, dispatched by the stage that owns them, not things you pick yourself.
+
+**They're the most project-shaped files in the kit.** Read them before your first real feature and
+adjust the *Read first* sections to your stack. The **write scopes are the part to leave alone**:
+`repo-detector` and `repo-auditor` have no `editFiles` for the same reason `feature.verify`
+doesn't.
 
 ### The file format
 
@@ -336,9 +360,9 @@ Start with:
 4. **`decisions.md`** — start empty. Add `D-001` the first time you decide something.
 5. **`feature-catalog.md`** — your first feature row.
 6. **`features/_template/manifest.yaml`** — copy it as-is.
-7. **`AGENTS.md`** and the container folder's `README.md` — copy both from
-   [`starter-kit/workspace-root/`](../starter-kit/workspace-root/), fill in `<product>`, and put
-   the canonical copies here in `athenaeum-docs/`. See
+7. **`AGENTS.md`**, its one-line `CLAUDE.md`, and the container folder's `README.md` — copy all
+   three from [`starter-kit/workspace-root/`](../starter-kit/workspace-root/), fill in
+   `<product>`, and put the canonical copies here in `athenaeum-docs/`. See
    [03 — Structure](03-structure.md#the-container-folder-isnt-entirely-bare-though) for why they
    also get a hand-synced local copy at the top of `~/src/athenaeum/`.
 
@@ -404,4 +428,5 @@ That last one is the real test. Everything else is plumbing.
 
 ---
 
-Next: [06 — Rollout](06-rollout.md)
+Next: [06 — Claude Code setup](06-claude-code-setup.md) if you want the second front-end, or
+[07 — Rollout](07-rollout.md) to get moving.

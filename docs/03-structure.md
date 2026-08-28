@@ -70,8 +70,14 @@ isn't a repo, they can't be committed there. Keep the canonical version inside
 into the container by hand when it changes. If two hand-synced copies feels like one indirection
 too many, the simpler alternative is to skip the container copy entirely and just tell people to
 open `athenaeum-docs/AGENTS.md` directly — you lose having instructions visible the instant someone
-opens the bare folder, and that's the whole tradeoff. A starter template for both files is in
+opens the bare folder, and that's the whole tradeoff. A starter template for these files is in
 [`starter-kit/workspace-root/`](../starter-kit/workspace-root/).
+
+**If you run Claude Code, the container stops being optional.** It reads `CLAUDE.md`, so
+`AGENTS.md` needs a one-line `@AGENTS.md` sibling to be seen at all — and the `/feature-*` stage
+commands live in `athenaeum-docs/.claude/`, which means they only resolve from the container once
+you symlink them in. Both steps are in
+[06 — Claude Code setup](06-claude-code-setup.md#step-2--make-the-skills-resolve-from-wherever-you-launch).
 
 ---
 
@@ -189,7 +195,7 @@ of that.
 
 Reading order isn't lost — it just moved to the docs repo's `README.md`, where it belongs. And note
 that it is **not** a work order: when you set this up you write `glossary.md` first
-([06 — Rollout](06-rollout.md)), long before there's a vision statement worth reading.
+([07 — Rollout](07-rollout.md)), long before there's a vision statement worth reading.
 
 ### Which of these the AI actually reads
 
@@ -462,12 +468,19 @@ test that gates production in stage 7.
 <workspace>/                          ← the folder that holds everything. NOT a git repo.
 ├── README.md                         ← local copy, untracked. See starter-kit/workspace-root/.
 ├── AGENTS.md                         ← local copy, untracked. Canonical version lives below.
+├── CLAUDE.md                         ← one line: @AGENTS.md. Claude Code reads this, not AGENTS.md.
+├── .claude/{skills,agents}           ← symlinks into the docs repo, so /feature-* resolves. Doc 06.
 │
 ├── <product>-docs/
 │   ├── <product>.code-workspace      ← VS Code multi-root file. Lives HERE. See doc 05.
 │   ├── AGENTS.md                     ← the canonical operating model, git-tracked
 │   ├── vision.md … walkthroughs.md
-│   ├── .github/agents/               ← the feature.* Copilot agents live here
+│   ├── .github/agents/               ← the 11 feature.* stage definitions. THE stages.
+│   │   └── repo-*.agent.md           ←   + the 6 sub-agents, Copilot front-end
+│   ├── .claude/                      ← the Claude Code front-end onto those same 11 stages
+│   │   ├── pipeline-runner.md        ←   the only Copilot→Claude translation layer
+│   │   ├── skills/feature-*/         ←   11 thin wrappers, holding no rules of their own
+│   │   └── agents/repo-*.md          ←   the same 6 sub-agents, Claude front-end
 │   └── features/
 │       ├── _template/manifest.yaml
 │       └── 015-hold-queue/

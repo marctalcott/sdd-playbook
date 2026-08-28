@@ -68,7 +68,7 @@ person who asked.
 > **Vocabulary check.** Every noun in your row must already exist in `glossary.md`. If the feature
 > needs a word the product doesn't have yet, that's a real signal: stop and add the term to the
 > glossary as a deliberate act, with the team. Do not let a synonym in. See
-> [07 — Pitfalls](07-pitfalls.md#synonym-drift).
+> [08 — Pitfalls](08-pitfalls.md#synonym-drift).
 
 **Done when:** the row is Ready-for-spec and the glossary covers its vocabulary.
 

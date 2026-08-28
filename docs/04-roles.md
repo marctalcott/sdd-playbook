@@ -189,7 +189,7 @@ If you loosen it:
 - **Write down what stays inside the pipeline.** Without an explicit line, "defect" grows to mean
   "anything I'd rather not spec." *A new capability, or a change to what a feature is* is the usual
   boundary.
-- **Pair it with [*Chasing the thing you found*](07-pitfalls.md).** The licence to fix directly and
+- **Pair it with [*Chasing the thing you found*](08-pitfalls.md).** The licence to fix directly and
   the discipline to stay on the current feature are the same decision seen from two sides. Adopt the
   first without the second and you have traded a bottleneck for a drift — the lead now fixes
   everything they notice, every fix is defensible, and the feature does not move.
