@@ -476,10 +476,11 @@ test that gates production in stage 7.
 │   ├── AGENTS.md                     ← the canonical operating model, git-tracked
 │   ├── vision.md … walkthroughs.md
 │   ├── .github/agents/               ← the 11 feature.* stage definitions. THE stages.
-│   ├── .claude/                      ← the Claude Code front-end onto those same 11 files
+│   │   └── repo-*.agent.md           ←   + the 6 sub-agents, Copilot front-end
+│   ├── .claude/                      ← the Claude Code front-end onto those same 11 stages
 │   │   ├── pipeline-runner.md        ←   the only Copilot→Claude translation layer
 │   │   ├── skills/feature-*/         ←   11 thin wrappers, holding no rules of their own
-│   │   └── agents/repo-*.md          ←   the 6 per-repo sub-agents a stage fans out to
+│   │   └── agents/repo-*.md          ←   the same 6 sub-agents, Claude front-end
 │   └── features/
 │       ├── _template/manifest.yaml
 │       └── 015-hold-queue/

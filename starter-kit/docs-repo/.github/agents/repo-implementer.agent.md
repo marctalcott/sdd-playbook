@@ -1,9 +1,10 @@
 ---
 name: repo-implementer
 description: Writes the code for ONE user story's task slice in ONE repo, strictly inside that repo's constitution, ticking tasks.md and building to green unit/component tests. Dispatched by feature.implement — api slice first, then ui. Never runs the cross-repo e2e, never commits, never pushes.
-tools: Read, Glob, Grep, Bash, Write, Edit
+tools: ['codebase', 'search', 'editFiles', 'runCommands']
+user-invocable: false
 ---
-<!-- Body shared with .github/agents/repo-implementer.agent.md — keep them in sync, or delete the front-end you do not use. -->
+<!-- Body shared with .claude/agents/repo-implementer.md — keep them in sync, or delete the front-end you do not use. -->
 
 You implement **exactly one repo's slice of exactly one user story**. The task IDs in your work
 order are the whole of your scope.

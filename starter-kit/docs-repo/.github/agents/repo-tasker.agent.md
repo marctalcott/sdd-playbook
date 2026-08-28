@@ -1,9 +1,10 @@
 ---
 name: repo-tasker
 description: Two modes for ONE repo — GENERATE a dependency-ordered, story-grouped tasks.md from that repo's plan, or MAP an existing tasks.md into per-story task-ID ranges for the manifest's slices. Dispatched by feature.tasks. Never writes the manifest, never writes src/.
-tools: Read, Glob, Grep, Bash, Write, Edit
+tools: ['codebase', 'search', 'editFiles', 'runCommands']
+user-invocable: false
 ---
-<!-- Body shared with .github/agents/repo-tasker.agent.md — keep them in sync, or delete the front-end you do not use. -->
+<!-- Body shared with .claude/agents/repo-tasker.md — keep them in sync, or delete the front-end you do not use. -->
 
 You run in **one of two modes**. Your prompt names which. If it does not, stop and ask — the
 modes have different outputs and guessing wrong either destroys an existing task list or

@@ -200,7 +200,9 @@ athenaeum-docs/.github/agents/
 ├── feature.signoff.agent.md
 ├── feature.uat.agent.md
 ├── feature.ship.agent.md
-└── feature.adopt.agent.md
+├── feature.adopt.agent.md
+│
+└── repo-*.agent.md                  ← the six sub-agents they dispatch. See below.
 ```
 
 They live in the **docs repo** because the docs repo is the coordination layer — that's where
@@ -212,17 +214,27 @@ VS Code discovers `.agent.md` files in `.github/agents/` and also in `.claude/ag
 **Copy them from [`starter-kit/docs-repo/.github/agents/`](../starter-kit/docs-repo/.github/agents/)
 — they're written and ready.**
 
-Each orchestrator dispatches **sub-agents** (`repo-planner`, `repo-implementer`, …) down into the
-code repos. **For the Copilot front-end you define these yourself** — see the
-[starter kit README](../starter-kit/README.md#how-the-agents-are-wired). Give each
-`user-invocable: false` so they stay out of the dropdown.
+Each orchestrator dispatches **sub-agents** down into the code repos, and all six ship beside the
+stages:
 
-> The kit *does* ship all six, written for the Claude Code front-end, in
-> [`starter-kit/docs-repo/.claude/agents/`](../starter-kit/docs-repo/.claude/agents/). The bodies
-> are what you want — the *Read first*, *Forbidden* and *Report back* sections transfer directly.
-> Only the frontmatter differs, because the two runners name their tools differently
-> (`tools: Read, Glob, Grep` vs `tools: ['codebase', 'search']`). Port the body, rewrite the four
-> lines above it.
+```
+athenaeum-docs/.github/agents/
+├── feature.*.agent.md               ← the 11 stages, above
+├── repo-scaffolder.agent.md         ← dispatched by feature.specify
+├── repo-detector.agent.md           ← by feature.adopt      (read-only)
+├── repo-planner.agent.md            ← by feature.plan
+├── repo-tasker.agent.md             ← by feature.tasks
+├── repo-implementer.agent.md        ← by feature.implement  (the only one that writes src/)
+└── repo-auditor.agent.md            ← by feature.analyze    (read-only)
+```
+
+Each carries `user-invocable: false` so it stays out of the dropdown — these are pipeline
+machinery, dispatched by the stage that owns them, not things you pick yourself.
+
+**They're the most project-shaped files in the kit.** Read them before your first real feature and
+adjust the *Read first* sections to your stack. The **write scopes are the part to leave alone**:
+`repo-detector` and `repo-auditor` have no `editFiles` for the same reason `feature.verify`
+doesn't.
 
 ### The file format
 

@@ -185,6 +185,17 @@ They are the most project-shaped files in the kit. Read them before your first r
 adjust the *Read first* and *Forbidden* sections to your stack; the write scopes are the part to
 leave alone.
 
+> **These six exist twice, once per front-end** — `.claude/agents/repo-*.md` here, and
+> `.github/agents/repo-*.agent.md` for Copilot. The **bodies are byte-identical**; only the
+> frontmatter differs, because the two runners name their tools differently. Each file carries an
+> HTML comment naming its twin.
+>
+> This is the one place the kit ships two copies of the same words, and it is a deliberate
+> exception to *two copies of a rule become two different rules* — a sub-agent's body **is** its
+> prompt, and there is no shared-include mechanism both runners read. **Most teams should delete
+> the front-end they don't use.** If you genuinely run both, editing one and not the other is the
+> failure mode to watch for.
+
 > **Your session may not be allowed to dispatch them.** Claude Code can be configured to withhold
 > sub-agent dispatch unless you ask for it explicitly. When that's set, it wins over anything a
 > markdown file says — a file cannot grant a session a capability its own configuration withholds.
@@ -225,10 +236,11 @@ Leave it on. The moment a model can invoke `feature.spec-signoff`, Gate 1 is dec
 │   ├── CLAUDE.md                         ← one line: @AGENTS.md
 │   ├── AGENTS.md                         ← canonical operating model, git-tracked
 │   ├── .github/agents/                   ← the 11 feature.* stage definitions
+│   │   └── repo-*.agent.md               ←   + the 6 sub-agents, Copilot front-end
 │   ├── .claude/
 │   │   ├── pipeline-runner.md            ← the translation layer
 │   │   ├── skills/feature-*/SKILL.md     ← 11 thin wrappers
-│   │   └── agents/repo-*.md              ← 6 per-repo sub-agents
+│   │   └── agents/repo-*.md              ←   the same 6, Claude front-end (delete one set)
 │   └── features/NNN-slug/{feature.md, manifest.yaml}
 │
 ├── <product>-api/    .specify/, .github/, src/

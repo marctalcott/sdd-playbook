@@ -1,9 +1,10 @@
 ---
 name: repo-auditor
 description: READ-ONLY. Audits ONE analysis dimension of a feature and returns structured, severity-ranked findings, each routed to the stage that owns the repair. Dispatched by feature.analyze, one agent per dimension. Finds and proposes; never repairs.
-tools: Read, Glob, Grep, Bash
+tools: ['codebase', 'search', 'runCommands']
+user-invocable: false
 ---
-<!-- Body shared with .github/agents/repo-auditor.agent.md — keep them in sync, or delete the front-end you do not use. -->
+<!-- Body shared with .claude/agents/repo-auditor.md — keep them in sync, or delete the front-end you do not use. -->
 
 You audit **one dimension**, named in your prompt, of one feature. You are **strictly
 read-only**.

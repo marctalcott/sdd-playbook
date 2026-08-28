@@ -1,9 +1,10 @@
 ---
 name: repo-scaffolder
 description: Cuts a feature branch in ONE repo and creates its Spec Kit spec folder with an empty spec.md copied from the repo template. Dispatched by feature.specify. Creates the container only — it never writes spec content, never plans, never tasks.
-tools: Read, Glob, Grep, Bash, Write
+tools: ['codebase', 'search', 'editFiles', 'runCommands']
+user-invocable: false
 ---
-<!-- Body shared with .github/agents/repo-scaffolder.agent.md — keep them in sync, or delete the front-end you do not use. -->
+<!-- Body shared with .claude/agents/repo-scaffolder.md — keep them in sync, or delete the front-end you do not use. -->
 
 You scaffold **one repo** for a feature whose number and slug have **already been decided by
 the caller**. You are a container-maker, not an author.

@@ -142,17 +142,45 @@ team member can follow the process from inside VS Code without reading this repo
 `repo-implementer`, …) where it runs against that repo's own constitution, then reconciles what
 comes back. That's the up/down rule from [01](../docs/01-why.md) in two lines of YAML.
 
-All six sub-agents — `repo-scaffolder`, `repo-detector`, `repo-planner`, `repo-tasker`,
-`repo-implementer`, `repo-auditor` — ship in
-[`docs-repo/.claude/agents/`](docs-repo/.claude/agents/), written for the Claude Code front-end.
-**For the Copilot front-end you still write your own**, because the two runners name their tools
-differently — but port the bodies rather than starting from scratch: the *Read first*, *Forbidden*
-and *Report back* sections transfer directly, and only the four frontmatter lines change. Give each
-`user-invocable: false` so they stay out of the dropdown.
+All six sub-agents ship, **for both front-ends**:
+
+| Sub-agent | Dispatched by | Writes |
+|---|---|---|
+| `repo-scaffolder` | `feature.specify` | the branch + an empty `spec.md` |
+| `repo-detector` | `feature.adopt` | **nothing — read-only** |
+| `repo-planner` | `feature.plan` | `plan.md`, `research.md`, `data-model.md`, `contracts/` |
+| `repo-tasker` | `feature.tasks` | `tasks.md` (GENERATE mode only) |
+| `repo-implementer` | `feature.implement` | `src/` — the only one that does |
+| `repo-auditor` | `feature.analyze` | **nothing — read-only** |
+
+Copilot reads `docs-repo/.github/agents/repo-*.agent.md`; Claude Code reads
+`docs-repo/.claude/agents/repo-*.md`. Each carries `user-invocable: false` so it stays out of the
+dropdown — they're pipeline machinery, dispatched by the stage that owns them, never picked by
+hand.
 
 They're the most project-shaped files in the kit, so read them before your first real feature and
 adjust them to your stack. **The write scopes are the part to leave alone** — `repo-detector` and
 `repo-auditor` are read-only for the same reason `feature.verify` is.
+
+### Two front-ends, one body
+
+The `feature.*` stages have **one** definition and two front-ends: the `.agent.md` is the stage,
+and Claude Code's skills read that same file rather than restating it. Nothing is duplicated.
+
+**The `repo-*` sub-agents are the one exception.** They exist twice — same body, byte for byte,
+with different frontmatter — because a sub-agent's body *is* its prompt, and there's no
+shared-include mechanism both runners read. Each file carries an HTML comment naming its twin.
+
+**Most teams should delete the front-end they don't use**, and then this exception evaporates:
+
+```bash
+rm -rf <product>-docs/.claude                      # Copilot-only shop
+rm  <product>-docs/.github/agents/repo-*.agent.md  # Claude-Code-only shop
+```
+
+If you genuinely run both, editing one and not the other is the failure mode to watch for. It's
+the same hazard [08 — Pitfalls](../docs/08-pitfalls.md) describes everywhere else; here it's
+accepted deliberately rather than by drift.
 
 ---
 
