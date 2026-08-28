@@ -171,6 +171,32 @@ two-line change.** Don't. Flag it and route it. The moment the coordinating laye
 it stops being trustworthy as a coordinator, and you've made yourself the bottleneck for every
 feature.
 
+### On loosening this rule
+
+Mature workspaces often do, and it can be the right call. The usual shape: **feature** work stays in
+the pipeline, while a defect in already-shipped behaviour, a copy fix, an ops script or a docs change
+gets done directly — with tests and a PR, but no feature folder and no gates. Once the pipeline is
+habitual, a blanket ban makes the lead a bottleneck for one-line fixes nobody wants to spec, and the
+ban starts getting quietly ignored instead of deliberately changed.
+
+If you loosen it:
+
+- **Do it with evidence, not the first time it's inconvenient.** The moment is when you can point at
+  a run of real PRs that genuinely did not need a feature folder — not a hypothetical.
+- **Record it where you record decisions**, and amend the workspace's `AGENTS.md` so the rule an
+  agent reads is the rule you actually run. Two versions of this rule in one workspace is worse than
+  either version.
+- **Write down what stays inside the pipeline.** Without an explicit line, "defect" grows to mean
+  "anything I'd rather not spec." *A new capability, or a change to what a feature is* is the usual
+  boundary.
+- **Pair it with [*Chasing the thing you found*](07-pitfalls.md).** The licence to fix directly and
+  the discipline to stay on the current feature are the same decision seen from two sides. Adopt the
+  first without the second and you have traded a bottleneck for a drift — the lead now fixes
+  everything they notice, every fix is defensible, and the feature does not move.
+
+The default in this playbook stays **strict**, because a workspace still learning the pipeline is
+better served by it. Loosening is a step you earn, not a starting position.
+
 ---
 
 ## Developer

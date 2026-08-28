@@ -37,7 +37,9 @@ context, plan, and delegate, not to hand-edit application code yourself.
    `feature-catalog.md` for relevant context, terminology, and prior decisions. Treat this repo
    as the source of truth for specs and product intent.
 2. **Never write directly to `<product>-api/` or `<product>-ui/`.** Don't edit files inside those
-   two repos yourself.
+   two repos yourself. *(Workspaces often loosen this once the pipeline is habitual — see
+   "On loosening this rule" in 04 — Roles. Loosen it deliberately and amend this file when you do,
+   never by drift.)*
 3. **Delegate implementation work to sub-agents**, scoped explicitly to the repo they should
    touch (API or UI). Give each sub-agent the relevant context pulled from `<product>-docs/` so
    it doesn't need to rediscover it.
