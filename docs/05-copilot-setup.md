@@ -2,6 +2,11 @@
 
 > **Read this if** you're the person actually building this. Everything here uses only VS Code and
 > GitHub Copilot. No other tooling, no subscriptions beyond Copilot.
+>
+> **Using Claude Code instead?** Steps 1–4 and 7–8 are the same either way — Spec Kit, the
+> constitutions, the instruction files, and seeding the docs repo are front-end agnostic. Read
+> those here, then take the front-end from [06 — Claude Code setup](06-claude-code-setup.md).
+> The stage definitions in step 6 are the same files for both runners.
 
 ---
 
@@ -208,9 +213,16 @@ VS Code discovers `.agent.md` files in `.github/agents/` and also in `.claude/ag
 — they're written and ready.**
 
 Each orchestrator dispatches **sub-agents** (`repo-planner`, `repo-implementer`, …) down into the
-code repos. Those are project-specific, so you define them yourself — see the
+code repos. **For the Copilot front-end you define these yourself** — see the
 [starter kit README](../starter-kit/README.md#how-the-agents-are-wired). Give each
 `user-invocable: false` so they stay out of the dropdown.
+
+> The kit *does* ship all six, written for the Claude Code front-end, in
+> [`starter-kit/docs-repo/.claude/agents/`](../starter-kit/docs-repo/.claude/agents/). The bodies
+> are what you want — the *Read first*, *Forbidden* and *Report back* sections transfer directly.
+> Only the frontmatter differs, because the two runners name their tools differently
+> (`tools: Read, Glob, Grep` vs `tools: ['codebase', 'search']`). Port the body, rewrite the four
+> lines above it.
 
 ### The file format
 
@@ -336,9 +348,9 @@ Start with:
 4. **`decisions.md`** — start empty. Add `D-001` the first time you decide something.
 5. **`feature-catalog.md`** — your first feature row.
 6. **`features/_template/manifest.yaml`** — copy it as-is.
-7. **`AGENTS.md`** and the container folder's `README.md` — copy both from
-   [`starter-kit/workspace-root/`](../starter-kit/workspace-root/), fill in `<product>`, and put
-   the canonical copies here in `athenaeum-docs/`. See
+7. **`AGENTS.md`**, its one-line `CLAUDE.md`, and the container folder's `README.md` — copy all
+   three from [`starter-kit/workspace-root/`](../starter-kit/workspace-root/), fill in
+   `<product>`, and put the canonical copies here in `athenaeum-docs/`. See
    [03 — Structure](03-structure.md#the-container-folder-isnt-entirely-bare-though) for why they
    also get a hand-synced local copy at the top of `~/src/athenaeum/`.
 
@@ -404,4 +416,5 @@ That last one is the real test. Everything else is plumbing.
 
 ---
 
-Next: [06 — Rollout](06-rollout.md)
+Next: [06 — Claude Code setup](06-claude-code-setup.md) if you want the second front-end, or
+[07 — Rollout](07-rollout.md) to get moving.

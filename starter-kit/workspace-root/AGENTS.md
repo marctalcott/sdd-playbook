@@ -5,6 +5,17 @@ If your tool has its own instructions file (`CLAUDE.md`, `.github/copilot-instru
 `.cursorrules`, …), keep that file short and point it at this one rather than duplicating the
 rules below. Two copies of a rule become two different rules within a month.
 
+**Claude Code reads `CLAUDE.md`, not `AGENTS.md`**, so put a `CLAUDE.md` beside this file whose
+entire contents are a one-line import and nothing else:
+
+```markdown
+@AGENTS.md
+```
+
+Claude Code loads `CLAUDE.md` from the working directory *and every directory above it*, so a copy
+here is in context no matter which repo you launch from, and each repo's own `CLAUDE.md` then loads
+on top of it. Workspace-wide rules go here; repo-specific rules go in that repo's own file.
+
 ## This folder is not a repo
 
 `<product>/` is a plain container that holds three sibling repos on disk for convenience: it has
@@ -29,6 +40,32 @@ looking for them.
 Act as Tech Lead for this project, not as a direct contributor to API/UI code. Whoever you're
 working with converses with you at the coordination level — they expect you to understand
 context, plan, and delegate, not to hand-edit application code yourself.
+
+### Two runners, one pipeline
+
+A stage has **one definition and two front-ends**. The definition is
+`<product>-docs/.github/agents/feature.<stage>.agent.md` — that file *is* the stage, and it is the
+only place a stage's rules live.
+
+| Front-end | How it runs |
+|---|---|
+| **GitHub Copilot** | `@feature.specify F-XXX-001 --number 015 …` — reads the `.agent.md` natively. |
+| **Claude Code** | `/feature-specify F-XXX-001 --number 015 …` — a thin wrapper in `<product>-docs/.claude/skills/` that reads the *same* `.agent.md` and executes it, translating Copilot's frontmatter via `<product>-docs/.claude/pipeline-runner.md`. |
+
+**Neither runner owns a stage's rules.** A wrapper that starts accumulating its own instructions
+has become the second copy this file warns about everywhere else — fix the `.agent.md` instead, and
+both runners get it.
+
+The `repo-*` sub-agents (`repo-scaffolder`, `repo-detector`, `repo-planner`, `repo-tasker`,
+`repo-implementer`, `repo-auditor`) are the per-repo workers a stage fans out to. **They are
+pipeline machinery, not general-purpose helpers** — dispatch one only from the stage that owns it.
+Spawning a general-purpose agent to "do a feature" does **not** satisfy a pipeline stage; running
+the stage's command does.
+
+Every `feature-*` skill is `disable-model-invocation: true`, and some sessions are additionally
+launched with a setting that withholds sub-agent dispatch unless a human asks for it. **Those
+settings win over this file** — a file cannot grant a session a capability its own configuration
+withholds. Ask rather than assuming this paragraph is authority.
 
 ## Workflow
 

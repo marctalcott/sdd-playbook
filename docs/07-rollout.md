@@ -199,7 +199,7 @@ Signs it isn't:
 - Gates are green but nobody can say when the test last ran.
 - Every UAT finding becomes "a small addition to this feature."
 
-Every one of those has a fix in [07 — Pitfalls](07-pitfalls.md).
+Every one of those has a fix in [08 — Pitfalls](08-pitfalls.md).
 
 ---
 
@@ -217,4 +217,4 @@ of keeping it there is what makes it trustworthy.
 
 ---
 
-Next: [07 — Pitfalls](07-pitfalls.md)
+Next: [08 — Pitfalls](08-pitfalls.md)

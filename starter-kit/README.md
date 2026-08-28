@@ -12,9 +12,9 @@ process until you know what the ten stages are.
 
 | Folder | Copy into | Contains |
 |---|---|---|
-| **`docs-repo/`** | `<product>-docs/` | The 11 agents, the manifest template, the three docs that do the daily work, and the multi-root workspace file |
+| **`docs-repo/`** | `<product>-docs/` | The 11 stage definitions, **both front-ends** (`.github/agents/` for Copilot, `.claude/` for Claude Code), the manifest template, the three docs that do the daily work, and the multi-root workspace file |
 | **`code-repo/`** | **each** code repo | The Copilot instructions template |
-| **`workspace-root/`** | `<workspace>/` (the bare container folder) | A local, untracked `README.md` + `AGENTS.md` — the operating model for whoever opens that folder directly instead of the workspace file |
+| **`workspace-root/`** | `<workspace>/` (the bare container folder) | A local, untracked `README.md` + `AGENTS.md` + `CLAUDE.md` — the operating model for whoever opens that folder directly instead of the workspace file |
 
 ```bash
 # from <workspace>/, with athenaeum-docs, athenaeum-api, athenaeum-ui as siblings
@@ -35,15 +35,33 @@ file in `athenaeum-docs/` instead means it's versioned and arrives automatically
 clones that repo. See [03 — Structure](../docs/03-structure.md#the-workspace-on-disk) for the
 diagram.
 
+**Using Claude Code?** Two more steps, both in
+[06 — Claude Code setup](../docs/06-claude-code-setup.md): symlink the skills and sub-agents into
+the container so `/feature-*` resolves from wherever you launch, and make `CLAUDE.md` a one-line
+`@AGENTS.md` import rather than a second operating model.
+
+```bash
+# from <workspace>/ — the container has no .git, so this is per-developer
+mkdir -p .claude
+ln -s ../athenaeum-docs/.claude/skills .claude/skills
+ln -s ../athenaeum-docs/.claude/agents .claude/agents
+```
+
 **Spec Kit is NOT in this kit** — install it per code repo with
 `specify init . --integration copilot`. See [05 — Setup](../docs/05-copilot-setup.md).
 
 ---
 
-## The 11 agents
+## The 11 stages
 
 In `docs-repo/.github/agents/`. They live in the **docs repo** because that's the coordination
 layer — their whole job is to reach *down* into the code repos.
+
+**A stage has one definition and two front-ends.** The `.agent.md` file *is* the stage. Copilot
+reads it natively as `@feature.plan`; Claude Code reads the same file as `/feature-plan`, via an
+eleven-skill wrapper layer in `docs-repo/.claude/` that holds no rules of its own. Neither runner
+owns a stage's rules — if you find yourself fixing a wrapper, fix the `.agent.md` instead and both
+runners get it.
 
 | Agent | Stage | Role | Gate? |
 |---|---|---|---|
@@ -124,11 +142,17 @@ team member can follow the process from inside VS Code without reading this repo
 `repo-implementer`, …) where it runs against that repo's own constitution, then reconciles what
 comes back. That's the up/down rule from [01](../docs/01-why.md) in two lines of YAML.
 
-You need to **define the sub-agents** (`repo-planner`, `repo-scaffolder`, `repo-implementer`,
-`repo-tasker`, `repo-auditor`, `repo-detector`) for your own stack, since what they do is
-project-specific. Give each `user-invocable: false` so they stay out of the dropdown. Start simple:
-a sub-agent that reads the repo's constitution and runs the matching `/speckit.*` command is enough
-to begin with.
+All six sub-agents — `repo-scaffolder`, `repo-detector`, `repo-planner`, `repo-tasker`,
+`repo-implementer`, `repo-auditor` — ship in
+[`docs-repo/.claude/agents/`](docs-repo/.claude/agents/), written for the Claude Code front-end.
+**For the Copilot front-end you still write your own**, because the two runners name their tools
+differently — but port the bodies rather than starting from scratch: the *Read first*, *Forbidden*
+and *Report back* sections transfer directly, and only the four frontmatter lines change. Give each
+`user-invocable: false` so they stay out of the dropdown.
+
+They're the most project-shaped files in the kit, so read them before your first real feature and
+adjust them to your stack. **The write scopes are the part to leave alone** — `repo-detector` and
+`repo-auditor` are read-only for the same reason `feature.verify` is.
 
 ---
 
@@ -161,5 +185,5 @@ Everything here is a starting point, not scripture. The parts worth keeping as-i
 The parts that are yours to change: the number of repos, the `compose` recipe, the ID conventions,
 the tools lists, how many stages one person covers.
 
-If you drop something, drop it deliberately — [07 — Pitfalls](../docs/07-pitfalls.md) says what each
+If you drop something, drop it deliberately — [08 — Pitfalls](../docs/08-pitfalls.md) says what each
 rule was protecting you from.
